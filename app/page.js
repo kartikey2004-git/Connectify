@@ -41,7 +41,7 @@ const howItWorks = [
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-16">
+    <main className="container mx-auto px-16 py-16">
       <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-24">
         <div className="lg:w-1/2">
           <h1 className="text-7xl font-extrabold pb-6 gradient-title">
