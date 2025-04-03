@@ -14,11 +14,8 @@ import { BarLoader } from "react-spinners";
 const Dashboard = () => {
   const { isLoaded, user } = useUser();
 
-  useEffect(() => {
-    if (isLoaded) {
-      console.log(user);
-    }
-  }, [isLoaded, user]);
+  console.log(user);
+  console.log(user?.username);
 
   const {
     register,
@@ -31,14 +28,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isLoaded && user?.username) {
-      setValue("username", user.username);
+      setValue("username", user?.username);
     }
   }, [isLoaded, user, setValue]);
 
   const {
     loading,
     error,
-    data,
     fn: fnUpdateUsername,
   } = useFetch(updateUsername);
 
@@ -50,7 +46,7 @@ const Dashboard = () => {
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Welcome, {user?.firstName}</CardTitle>
+          <CardTitle>Welcome, {user?.username}</CardTitle>
         </CardHeader>
         {/* Latest Updates or whatever if someone has booked call with us the upcoming calls */}
       </Card>

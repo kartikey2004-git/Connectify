@@ -1,9 +1,10 @@
+"use client"
 import React from 'react';
 import './ErrorPage.css';
 
 const ErrorPage = () => {
   return (
-    <div className="background">
+    <div className="background h-screen w-full ">
       <div className="ground"></div>
       <div className="container">
         <div className="left-section">

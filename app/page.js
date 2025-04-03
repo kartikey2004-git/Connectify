@@ -52,7 +52,7 @@ export default function Home() {
             schedule events, define your availability, and allow others to book
             time with you—smoothly and without any trouble
           </p>
-          <Link href={"/dashoard"}>
+          <Link href={"/dashboard"}>
             <Button size={"lg"} className={"text-lg"}>
               Get Started <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
