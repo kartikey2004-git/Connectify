@@ -80,15 +80,15 @@ const AppLayout = ({ children }) => {
           {children}
         </main>
 
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-md">
-          <ul className="flex justify-around">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-md z-50">
+          <ul className="flex justify-around items-center py-2 px-4">
             
             {navItems.map((item) => {
               return (
                 <li key={item.id}>
                   <Link
                     href={item.href}
-                    className={`flex flex-col items-center py-2 px-4 ${
+                    className={`flex flex-col items-center text-xs ${
                       pathname === item.href ? "text-blue-600" : "text-gray-600"
                     }`}
                   >

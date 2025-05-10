@@ -14,6 +14,8 @@ import { BarLoader } from "react-spinners";
 const Dashboard = () => {
   const { isLoaded, user } = useUser();
 
+  // useUser() : gives you access to the current signed-in user's details, authentication state, and some utility functions
+
   // console.log(user);
   console.log(user?.username);
 
@@ -46,7 +48,7 @@ const Dashboard = () => {
     <div className="space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle>Welcome, {user?.username}</CardTitle>
+          <CardTitle>Welcome, {user?.firstName}</CardTitle>
         </CardHeader>
         {/* Latest Updates or whatever if someone has booked call with us the upcoming calls */}
       </Card>

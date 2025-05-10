@@ -487,106 +487,7 @@ ask for name of new migration every time I perform changes in any model
 
 - user which we get from CurrentUser() in checkUser.js
 
-```bash
-_User {
-  id: 'user_2wrtNZya8yXFJi5sH3rvKvPAGYd',
-  passwordEnabled: false,
-  totpEnabled: false,
-  backupCodeEnabled: false,
-  twoFactorEnabled: false,
-  banned: false,
-  locked: false,
-  createdAt: 1746811480269,
-  updatedAt: 1746816867431,
-  imageUrl: 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJ3cnVJTTRDV0FVMmJmeklhT2o2QVFkOTVJdyJ9',
-  hasImage: true,
-  primaryEmailAddressId: 'idn_2wrtLGlLdkAttccvIeXywNQr9P0',
-  primaryPhoneNumberId: null,
-  primaryWeb3WalletId: null,
-  lastSignInAt: 1746816867412,
-  externalId: null,
-  username: null,
-  firstName: 'Kartikey',
-  lastName: 'Bhatnagar',
-  publicMetadata: {},
-  privateMetadata: {},
-  unsafeMetadata: {},
-  emailAddresses: [
-    _EmailAddress {
-      id: 'idn_2wrtLGlLdkAttccvIeXywNQr9P0',
-      emailAddress: 'kartikeybhatnagar247@gmail.com',
-      verification: [_Verification],
-      linkedTo: [Array]
-    }
-  ],
-  phoneNumbers: [],
-  web3Wallets: [],
-  externalAccounts: [
-    _ExternalAccount {
-      id: 'idn_2wrtLGFWebZKPP6rYTcXHP3pRiX',
-      provider: 'oauth_google',
-      identificationId: 'idn_2wrtLGFWebZKPP6rYTcXHP3pRiX',
-      externalId: '112268912707369676303',
-      approvedScopes: 'email https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid profile',
-      emailAddress: 'kartikeybhatnagar247@gmail.com',
-      firstName: 'Kartikey',
-      lastName: 'Bhatnagar',
-      imageUrl: 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKcWxIZVNnN0d0Q0lGNEVlYzVHdEZrYXgzMTlQb3RwNmQyc2xJR1o5TkJpamRYbnc9czEwMDAtYyIsInMiOiIrcjNLdFpjMmtwbHJ5VTBRZ0tTSTVjWm42bzhxWEJxSkJzT1E3cHZGZ0pFIn0',
-      username: '',
-      publicMetadata: {},
-      label: null,
-      verification: [_Verification]
-    }
-  ],
-  samlAccounts: [],
-  lastActiveAt: 1746811480269,
-  createOrganizationEnabled: true,
-  createOrganizationsLimit: null,
-  deleteSelfEnabled: true,
-  legalAcceptedAt: null,
-  _raw: {
-    id: 'user_2wrtNZya8yXFJi5sH3rvKvPAGYd',
-    object: 'user',
-    username: null,
-    first_name: 'Kartikey',
-    last_name: 'Bhatnagar',
-    image_url: 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJ3cnVJTTRDV0FVMmJmeklhT2o2QVFkOTVJdyJ9',
-    has_image: true,
-    primary_email_address_id: 'idn_2wrtLGlLdkAttccvIeXywNQr9P0',    
-    primary_phone_number_id: null,
-    primary_web3_wallet_id: null,
-    password_enabled: false,
-    two_factor_enabled: false,
-    totp_enabled: false,
-    backup_code_enabled: false,
-    email_addresses: [ [Object] ],
-    phone_numbers: [],
-    web3_wallets: [],
-    passkeys: [],
-    external_accounts: [ [Object] ],
-    saml_accounts: [],
-    enterprise_accounts: [],
-    public_metadata: {},
-    private_metadata: {},
-    unsafe_metadata: {},
-    external_id: null,
-    last_sign_in_at: 1746816867412,
-    banned: false,
-    locked: false,
-    lockout_expires_in_seconds: null,
-    verification_attempts_remaining: 100,
-    created_at: 1746811480269,
-    updated_at: 1746816867431,
-    delete_self_enabled: true,
-    create_organization_enabled: true,
-    last_active_at: 1746811480269,
-    mfa_enabled_at: null,
-    mfa_disabled_at: null,
-    legal_accepted_at: null,
-    profile_image_url: 'https://images.clerk.dev/uploaded/img_2wruIM4CWAU2bfzIaOj6AQd95Iw'
-  }
-}
-```
+- [Docs for getting currentUser  in clerk](https://clerk.com/docs/references/nextjs/current-user)
 
 
 - if user is already present hai database mein toh
@@ -608,9 +509,9 @@ User already exists in Neon DB:
 ```
 
 
+---------------------------------------------------
 
-
-
+To handle forms in my project , we gonna uses react-hook-form along with zod validation library 
 
 
 

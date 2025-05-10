@@ -143,11 +143,11 @@ export default function Home() {
 
         <Link href="/" className="inline-flex justify-center mb-6">
           <Image
-            src="/logo.png"
+            src="/banner1.png"
             width={180}
             height={70}
             alt="Schedulrr Logo"
-            className="h-16 w-auto"
+            className="h-30 w-auto"
           />
         </Link>
 

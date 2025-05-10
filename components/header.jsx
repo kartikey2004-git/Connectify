@@ -15,11 +15,11 @@ const Header = async () => {
 
       <Link href={"/"} className="flex items-center">
         <Image
-          src={"/logo.png"}
-          width={"150"}
-          height={"60"}
+          src={"/banner1.png"}
+          width={"300"}
+          height={"300"}
           alt="Schedulrr Logo"
-          className="h-16 w-auto"
+          className="h-25 w-auto"
         />
       </Link>
 
