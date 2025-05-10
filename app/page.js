@@ -41,29 +41,33 @@ const howItWorks = [
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-16 py-16">
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-24">
-        <div className="lg:w-1/2">
-          <h1 className="text-7xl font-extrabold pb-6 gradient-title">
+    <main className="container mx-auto px-4 py-16">
+      {/* Hero Section */}
+
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16 px-4 sm:px-8">
+        <div className="lg:w-1/2 text-center lg:text-left">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold pb-4 sm:pb-6 ">
             Streamline Your Scheduling
           </h1>
-          <p className="text-xl text-gray-600 mb-10">
-            Schedulerrr transforms the way you manage time. Effortlessly
-            schedule events, define your availability, and allow others to book
-            time with you—smoothly and without any trouble
+
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-10">
+            Connectify transforms the way you manage time. Effortlessly schedule
+            events, define your availability, and allow others to book time with
+            you—smoothly and without any trouble.
           </p>
+
           <Link href={"/dashboard"}>
-            <Button size={"lg"} className={"text-lg"}>
+            <Button size={"lg"} className="text-base sm:text-lg">
               Get Started <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
 
         <div className="lg:w-1/2 flex justify-center">
-          <div className="relative w-full max-w-md aspect-square">
+          <div className="relative w-64 sm:w-80 md:w-96 aspect-square">
             <Image
-              src={"/poster.png"}
-              alt="Scheduling ilustration"
+              src={"/banner.jpeg"}
+              alt="Scheduling illustration"
               fill
               style={{ objectFit: "contain" }}
             />
@@ -71,17 +75,20 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Key Features Section */}
+
       <div className="mb-24">
-        <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-b from-indigo-500 via-sky-400 to-cyan-300 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-bold text-center mb-12">
           Key Features
         </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => {
             return (
               <Card key={index}>
                 <CardHeader>
-                  <feature.icon className="w-12 h-12 text-blue-500 mb-4 mx-auto" />
-                  <CardTitle className="text-center text-blue-600">
+                  <feature.icon className="w-12 h-12 mb-4 mx-auto" />
+                  <CardTitle className="text-center">
                     {feature.title}
                   </CardTitle>
                 </CardHeader>
@@ -96,22 +103,27 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Testimonials Section */}
+
       <div className="mb-24">
-        <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-b from-indigo-500 via-sky-400 to-cyan-300 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-bold text-center mb-12">
           What Our Users say
         </h2>
         <TestimonialCarousel />
       </div>
 
+      {/* How It Works Section */}
+
       <div className="mb-24">
-        <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-b from-indigo-500 via-sky-400 to-cyan-300 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-bold text-center mb-12">
           How it Works
         </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {howItWorks.map((step, index) => (
             <div key={index} className="text-center">
-              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-600 font-bold text-xl">
+              <div className="bg-gray-200 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <span className="font-bold text-xl">
                   {index + 1}
                 </span>
               </div>
@@ -122,17 +134,33 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="bg-blue-600 text-white rounded-lg p-8 text-center">
-        <h2 className="text-3xl font-bold mb-4">
-          Ready to Simplify Your Scheduling
+      {/* CTA (call to action) Section */}
+
+      <div className="border border-gray-200 rounded-2xl p-6 sm:p-8 lg:p-12 text-center shadow-md max-w-3xl mx-auto bg-white">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 ">
+          Ready to Simplify Your Scheduling with
         </h2>
-        <p className="text-xl mb-6">
-          Join thousands of professionals who trust Schedulerrr for efficient
-          time
+
+        <Link href="/" className="inline-flex justify-center mb-6">
+          <Image
+            src="/logo.png"
+            width={180}
+            height={70}
+            alt="Schedulrr Logo"
+            className="h-16 w-auto"
+          />
+        </Link>
+
+        <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8">
+          Join thousands of professionals who trust Connectify for efficient
+          time management.
         </p>
 
-        <Link href={"/dashboard"}>
-          <Button size={"lg"} variant={"secondary"} className={"text-blue-600"}>
+        <Link href="/dashboard">
+          <Button
+            size="lg"
+            className="text-lg sm:text-xl px-6 py-3 rounded-full"
+          >
             Start for free <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </Link>

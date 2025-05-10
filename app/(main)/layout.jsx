@@ -16,14 +16,36 @@ const navItems = [
 ];
 
 const AppLayout = ({ children }) => {
+
   const { isLoaded } = useUser();
+
+  /* useUser() is a React hook provided by Clerk for handling authentication. 
+  
+  It gives you access to the current signed-in user's details, authentication state, and some utility functions
+
+     - isLoaded: Tells you if Clerk finished loading the user state.
+
+     - isSignedIn: true if the user is signed in, false if not.
+
+     - user: Gives you access to user properties like user.id, user.firstName, user.emailAddresses, etc.
+
+  */
+
   const pathname = usePathname();
+
+  // usePathname() : A Client Component hook that lets you read the current URL's pathname.
+
+  // aside is very important for accessibility , this is not the main content of our page  ( important in interviews )
 
   return (
     <>
+    
       {!isLoaded && <BarLoader width={"100%"} color="#36d7b7" />}
+      
       <div className="flex flex-col h-screen bg-blue-50 md:flex-row">
+
         <aside className="hidden md:block w-64 bg-white">
+
           <nav className="mt-8">
             <ul>
               {navItems.map((item) => {
@@ -39,7 +61,7 @@ const AppLayout = ({ children }) => {
                       {item.label}
                     </Link>
                   </li>
-                );
+                )
               })}
             </ul>
           </nav>
@@ -48,6 +70,9 @@ const AppLayout = ({ children }) => {
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <header className="flex justify-between items-center mb-4">
             <h2 className="text-5xl md:text-6xl gradient-title pt-2 md:pt-0 text-center md:text-left w-full">
+
+              {/* to find user on which route/page user currently */}
+
               {navItems.find((item) => item.href === pathname).label ||
                 "Dashboard"}
             </h2>
@@ -57,6 +82,7 @@ const AppLayout = ({ children }) => {
 
         <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-md">
           <ul className="flex justify-around">
+            
             {navItems.map((item) => {
               return (
                 <li key={item.id}>

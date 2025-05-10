@@ -25,3 +25,6 @@ const UserMenu = () => {
 };
 
 export default UserMenu;
+
+// customize the UserMenu : create a events - userMenu Button  which routes us to /events 
+

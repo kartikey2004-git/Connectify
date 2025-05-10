@@ -7,3 +7,5 @@ const AuthLayout = ({children}) => {
 }
 
 export default AuthLayout
+
+// this authLayout file works for auth won't affect other things for our app

@@ -14,7 +14,7 @@ import { BarLoader } from "react-spinners";
 const Dashboard = () => {
   const { isLoaded, user } = useUser();
 
-  console.log(user);
+  // console.log(user);
   console.log(user?.username);
 
   const {
