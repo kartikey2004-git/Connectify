@@ -46,8 +46,10 @@ const EventForm = ({onSubmitForm}) => {
   const onSubmit = async (data) => {
     await fnCreateEvent(data)
 
-    if (!loading && !error) onSubmitForm()
+    if (!loading && !error) {
+      onSubmitForm()
       router.refresh()
+    }
   };
 
   return (
@@ -71,6 +73,7 @@ const EventForm = ({onSubmitForm}) => {
         )}
       </div>
 
+
       <div>
         <label
           htmlFor="description"
@@ -87,6 +90,7 @@ const EventForm = ({onSubmitForm}) => {
           </p>
         )}
       </div>
+
 
       <div>
         <label
@@ -109,6 +113,7 @@ const EventForm = ({onSubmitForm}) => {
           <p className="text-red-600 text-sm mt-1">{errors.duration.message}</p>
         )}
       </div>
+
 
       <div>
         <label

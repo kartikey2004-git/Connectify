@@ -525,6 +525,79 @@ if we are fetching something that will happen inside of the server
    - update user in database and clerk from dashboard
 
 
+clerkDocs mein sab mein 
+
+  - const client  = await clerkclient() 
+    
+    - pehle unhone function call kr liya and then phir wo docs mein clerkClient ki properties ka access kr rhe hai 
+
+  - kyuki jo method hai clerk client wo pehle hi call ho chuka , isliye uss ki properties ka access kr pa rhe hai 
+
+
+
 - If we want to create an event , it will route us to /events page with flag create=true , it will popup the drawer from bottom and allow us to create the event
 
 - I want this drawer accessible in whole our app
+
+---------------------------------------------------
+events.js
+
+console.log(" Raw Event Data Received:", data) :
+
+```bash
+ Raw Event Data Received: {
+  title: 'hola',
+  description: 'Frontend interview course prep',
+  duration: 30,
+  isPrivate: true
+}
+```
+
+console.log("Validated Event Data:", validatedData);
+
+console.log("User ID:", userId);
+
+```bash
+
+Validated Event Data: {
+  success: true,
+  data: {
+    title: 'hola',
+    description: 'Frontend interview course prep',
+    duration: 30,
+    isPrivate: true
+  }
+}
+
+User ID: user_2wxZBvKEZQeNFvThwTScwGxcOSn
+
+```
+
+- after creating an event , we got in return Arrays of objects containing data about particular event
+
+```bash
+[
+  {
+    id: 'd4634462-f692-4d3f-879b-fd99e26402e8',
+    title: 'moj masti meet',
+    description: 'moj masti krenge aa jao',
+    duration: 30,
+    userId: 'b90d5137-2238-43f6-82b6-a6e6c80dd1bf',
+    isPrivate: true,
+    createdAt: 2025-05-11T19:35:12.769Z,
+    updatedAt: 2025-05-11T19:35:12.769Z,
+    _count: { bookings: 0 }
+  },
+  {
+    id: '92ff4ca7-9316-4bbe-b406-c006e5bacf46',
+    title: 'Frontend preparation',
+    description: 'Frontend interview course prep',
+    duration: 30,
+    userId: 'b90d5137-2238-43f6-82b6-a6e6c80dd1bf',
+    isPrivate: true,
+    createdAt: 2025-05-11T18:32:53.685Z,
+    updatedAt: 2025-05-11T18:32:53.685Z,
+    _count: { bookings: 0 }
+  }
+]
+```

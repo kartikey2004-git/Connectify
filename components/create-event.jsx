@@ -37,7 +37,7 @@ export default function CreateEventDrawer() {
     if (create === "true") {
       setIsOpen(true);
     }
-  }, []);
+  }, [searchParams]);
 
   const handleClose = () => {
     setIsOpen(false);
