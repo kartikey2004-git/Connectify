@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// structure of username , all validations on username with help of zod validation library
+
 export const usernameSchema = z.object({
   username: z
     .string()
@@ -11,15 +13,19 @@ export const usernameSchema = z.object({
     ),
 });
 
+// structure of event form , all validations on event form with help of zod validation library
+
 export const eventSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required")
     .max(100, "Title must be 100 characters or less"),
+
   description: z
     .string()
     .min(1, "Description is required")
     .max(500, "Title must be 500 characters or less"),
+    
   duration: z.number().int().positive("Duration must be a positive integer"),
 
   isPrivate: z.boolean()

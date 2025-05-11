@@ -515,27 +515,16 @@ To handle forms in my project , we gonna uses react-hook-form along with zod val
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 in previous , old way of writing next js , we are using api folder allowed us to have an api route which can we use to fetch data inside our application...
 
 
-server actions / server side code : When you use server actions or write server-side code, the API calls made on the server are not exposed to the client.
+- server actions / server side code : When you use server actions or write server-side code, the API calls made on the server are not exposed to the client.
 
 if we are fetching something that will happen inside of the server
 
+   - update user in database and clerk from dashboard
 
+
+- If we want to create an event , it will route us to /events page with flag create=true , it will popup the drawer from bottom and allow us to create the event
+
+- I want this drawer accessible in whole our app
