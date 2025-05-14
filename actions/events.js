@@ -144,6 +144,8 @@ export async function DeleteEvent(eventId) {
       throw new Error("Event not found or unauthorized");
     }
 
+    // delete event from database on basis of  userId
+
     await db.event.delete({
       where: {
         id: eventId,

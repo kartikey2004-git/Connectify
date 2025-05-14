@@ -25,8 +25,61 @@ export const eventSchema = z.object({
     .string()
     .min(1, "Description is required")
     .max(500, "Title must be 500 characters or less"),
-    
+
   duration: z.number().int().positive("Duration must be a positive integer"),
 
-  isPrivate: z.boolean()
+  isPrivate: z.boolean(),
+});
+
+
+
+// Validations on Availability form with help of zod validation library
+
+
+
+/* 
+
+In availabilitySchema , we'll have availabilites all of the days of the week and we'll have the time gap
+
+
+For each and every day we have a day schema as well 
+   
+   - but for both endTime and startTime , we need to ensure endTime should always after startTime
+
+*/
+
+export const daySchema = z
+  .object({
+    isAvailable: z.boolean(), // Is user is available or not
+
+    startTime: z.string().optional(),
+    endTime: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.isAvailable) {
+        return data.startTime < data.endTime;
+      }
+      return true;
+    },
+    {
+      message: "End Time must be more than start time",
+      path : ["endTime"] // and we can give the exact field that has error 
+    }
+  )
+
+  
+// refine() is a method used to add custom validation logic to a schema after the base validation has passed.
+
+
+export const availabilitySchema = z.object({
+  monday : daySchema,
+  tuesday : daySchema,
+  wednesday : daySchema,
+  thursday : daySchema,
+  friday : daySchema,
+  saturday : daySchema,
+  sunday : daySchema,
+
+  timeGap : z.number().min(0, "Time gap must be 0 or more minutes").int()
 });

@@ -16,23 +16,28 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-
           <Header />
 
           <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
             {children}
           </main>
 
-          <footer className="bg-gray-100 py-12">
-            <div className="container mx-auto px-4 text-center text-gray-600">
-              <p className="text-lg">
-                Made with ❤️ by Kartikey 🎀😎
+          <footer className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 py-8 mt-12 shadow-inner">
+            <div className="max-w-screen-xl mx-auto px-4 text-center">
+              <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
+                Made with <span className="text-red-500">❤️</span> by{" "}
+                <span className="font-semibold">
+                  Kartikey
+                </span>{" "}
+                🎀😎
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                © {new Date().getFullYear()} All rights reserved.
               </p>
             </div>
           </footer>
 
           <CreateEventDrawer />
-
         </body>
       </html>
     </ClerkProvider>
