@@ -173,29 +173,10 @@ export async function getUserAvailability() {
     };
   })
 
-  console.log("AvailabilityData", availabilityData);
+  // console.log("AvailabilityData", availabilityData);
 
   return availabilityData;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // API for updating availability and add the logic for it
 
@@ -223,7 +204,12 @@ export async function updateAvailability(data) {
 
   // console.log("data after changing updateAvailability",user)
 
+
+  // Object.entries will convert object into array , each and every entry converted into seperate Array , now it's safe to iterate it over here
+
+
   // now after this data we are getting in function , we need to convert it in a way that we can store it inside of database
+
 
   // Returns an array of key/values of the enumerable own properties of an object
 
@@ -248,6 +234,9 @@ export async function updateAvailability(data) {
             startTime: new Date(`${baseDate}T${startTime}:00Z`),
             endTime: new Date(`${baseDate}T${endTime}:00Z`),
 
+
+            // this has converted time into other time zone but when we fetch this time back to us we will convert this time to our current time zone when displaying it for the user
+
             /* 
 
             this baseDate doesn't matter really much because 
@@ -255,6 +244,8 @@ export async function updateAvailability(data) {
                - when we will be rendering it inside of our events page or whenever 
                   
                   - other user will book a time with us , we would just need to consider the startTime and endTime with respect to that particular Date the one that they are choosing 
+
+            
             
             */
           },
@@ -263,23 +254,42 @@ export async function updateAvailability(data) {
       return [];
     }
   )
+
   // console.log(availabilityData) 
 
 
-  // after this we need to update this data inside of our database
+  // after this we need to update this data inside of our database along with timeGap as well and if there is no availability then it will create it
 
 
+  if(user.availability) {
+    await db.availability.update({
+      where : { id : user.availability.id },
+      data : {
+        timeGap : data.timeGap,
+        days : {
+          deleteMany: {},
+          create : availabilityData
+        }
+      }
+    })
+  }
+
+
+  else{
+    await db.availability.create({
+      data : {
+        userId : user.id,
+        timeGap : data.timeGap,
+        days : {
+          create : availabilityData
+        }
+      }
+    })
+  }
+  return { success:  true }
 }
 
-
-
-
-
-
-
-
 /*
-
 
 A function that accepts up to three arguments. 
   
@@ -287,10 +297,12 @@ A function that accepts up to three arguments.
    
    - Calls a defined callback function on each element of an array. 
    
-   - Then, flattens the result into a new array. This is identical to a map followed by flat with depth 1.
+   - Then, flattens the result into a new array.
 
 
-   - whatever the result of each and every call back we will get , it will converted into a new Array
+   - whatever the result of each and every call back we will get , it will converted into a new Array 
+   
+   ( basically it removes the [] or flattened the Array)
 
 
 

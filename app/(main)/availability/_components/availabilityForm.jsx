@@ -45,11 +45,24 @@ const AvailabilityForm = ({ initialData }) => {
   };
 
   return (
+
+    <>
+
+    {/* we have different checkboxes for each and every day in form  */}
+    
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-6 p-6 bg-white rounded-xl shadow-md max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-hide"
     >
-      <h2 className="text-2xl font-semibold mb-2">Set Weekly Availability</h2>
+      
+
+    {/* 
+    
+    for each and every field , we have this isAvailable , this is what will define particular day is available or not
+   
+    if we check this checkbox, the day is available 
+    
+    */}
 
       {[
         "monday",
@@ -60,6 +73,7 @@ const AvailabilityForm = ({ initialData }) => {
         "saturday",
         "sunday",
       ].map((day) => {
+
         // Watch  to the entire form update/change based on onChange and re-render at the useForm.
 
         // this is what we are monitoring and if this is selected this will be true else it will be false
@@ -75,38 +89,50 @@ const AvailabilityForm = ({ initialData }) => {
               name={`${day}.isAvailable`}
               control={control}
               render={({ field }) => {
+
                 return (
                   <Checkbox
                     className="w-5 h-5 border-gray-300 rounded"
+
                     checked={field.value}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange = {(checked) => {
+
                       setValue(`${day}.isAvailable`, checked);
 
-                      // if user has not checked it and not provided the value , we'll provide some default to backend
 
-                      /* because it doesn't really matter right 
-                      if it checked or not 
-                      
-                         - it doesn't matter what time is over here 
-
-                      because  user is not available , so that person who is booking will not see this
-
-                      */
+                      // what if user not checked it and not provided it value , just give default value to backend
 
                       if (!checked) {
+
                         setValue(`${day}.startTime`, "09:00");
 
                         setValue(`${day}.endTime`, "17:00");
                       }
+
+                      
+                    /* because it doesn't really matter right if it checked or not 
+                      
+                        - it doesn't matter what time is over here 
+
+                    because  user is not available , so that person who is booking will not see this availability of user
+
+                    */
+
                     }}
                   />
                 );
               }}
             />
 
+
+
             <span className="w-24 font-medium">
               {day.charAt(0).toUpperCase() + day.slice(1)}
             </span>
+
+
+            {/* We want to make sure whenever we check on any of the checkboxes only then the time shows up over here */}
+
 
             {isAvailable && (
               <>
@@ -114,12 +140,13 @@ const AvailabilityForm = ({ initialData }) => {
                   name={`${day}.startTime`}
                   control={control}
                   render={({ field }) => {
+
                     return (
                       <Select
                         value={field.value}
                         onValueChange={field.onChange}
                       >
-                        <SelectTrigger className="w-32 border-gray-300 focus:ring-2 focus:ring-blue-500">
+                        <SelectTrigger className="w-32 border-gray-300 focus:ring-2">
                           <SelectValue placeholder="Start Time" />
                         </SelectTrigger>
 
@@ -132,6 +159,7 @@ const AvailabilityForm = ({ initialData }) => {
                             );
                           })}
                         </SelectContent>
+
                       </Select>
                     );
                   }}
@@ -148,7 +176,7 @@ const AvailabilityForm = ({ initialData }) => {
                         value={field.value}
                         onValueChange={field.onChange}
                       >
-                        <SelectTrigger className="w-32 border-gray-300 focus:ring-2 focus:ring-blue-500">
+                        <SelectTrigger className="w-32 border-gray-300 focus:ring-2">
                           <SelectValue placeholder="End Time" />
                         </SelectTrigger>
 
@@ -189,7 +217,7 @@ const AvailabilityForm = ({ initialData }) => {
           {...register("timeGap", {
             valueAsNumber: true,
           })}
-          className="w-32 border-gray-300 focus:ring-2 focus:ring-blue-500"
+          className="w-32 border-gray-300 focus:ring-2 "
         />
 
         {errors?.timeGap && (
@@ -201,30 +229,24 @@ const AvailabilityForm = ({ initialData }) => {
 
       {/* Update Availability Button */}
 
-      <Button type="submit" className="mt-4 px-6 py-2 text-white rounded-md">
-        Update Availability
+      {error && <div className="text-red-500 text-sm">{error?.message}</div>}
+
+
+      <Button 
+      type="submit" 
+      className="mt-4 px-6 py-2 text-white rounded-md"
+      disabled={loading}
+      >
+        { loading ? "Updating..." : "Update Availability"}
       </Button>
     </form>
+    </>
   );
 };
 
 export default AvailabilityForm;
 
-/* we have different checkboxes for each and every day in form*/
 
-/* 
-
- for each and every field , we have this isAvailable , this is what will define particular day is available or not
-   
-   - if we check this checkbox, the day is available
-
-*/
-
-/*
- 
- We want to make sure whenever we check on any of the checkboxes only then the time shows up over here
-
-*/
 
 /*
 

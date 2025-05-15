@@ -780,6 +780,7 @@ Notes ::
 console.log() at the line of 162
 
 ```bash
+
 data after changing updateAvailability ::
  {
   id: 'b90d5137-2238-43f6-82b6-a6e6c80dd1bf',
@@ -859,14 +860,24 @@ console.log(availabilityData)
 ```bash
 [
   {
-    day: 'WEDNESDAY',
-    startTime: 2025-05-13T05:30:00.000Z,
-    endTime: 2025-05-13T13:30:00.000Z
+    day: 'MONDAY',
+    startTime: 2025-05-15T04:00:00.000Z,
+    endTime: 2025-05-15T11:30:00.000Z
   },
   {
-    day: 'THURSDAY',
-    startTime: 2025-05-13T08:00:00.000Z,
-    endTime: 2025-05-13T15:00:00.000Z
+    day: 'TUESDAY',
+    startTime: 2025-05-15T04:30:00.000Z,
+    endTime: 2025-05-15T17:00:00.000Z
+  },
+  {
+    day: 'WEDNESDAY',
+    startTime: 2025-05-15T05:00:00.000Z,
+    endTime: 2025-05-15T14:00:00.000Z
   }
 ]
 ```
+
+---------------------------------------------------
+
+
+Time to Go to build our custom user page in which we display name , profile pic and all of public events that we have showcased 

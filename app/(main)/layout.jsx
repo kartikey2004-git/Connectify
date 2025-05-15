@@ -66,7 +66,7 @@ const AppLayout = ({ children }) => {
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <header className="flex justify-between items-center mb-4">
             <h2
-              className="text-3xl md:text-4xl font-extrabold tracking-tighter pb-4 pr-2 transition-all duration-300 ease-in-out pt-2 md:pt-0 text-center md:text-left w-full"
+              className="text-3xl md:text-4xl font-semibold tracking-tighter pb-4 pr-2 transition-all duration-300 ease-in-out pt-2 md:pt-0 text-center md:text-left w-full"
             >
               {/* to find user on which route/page user currently */}
 
