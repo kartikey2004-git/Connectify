@@ -1,4 +1,4 @@
-import { getEventDetails } from "@/actions/events";
+import { getEventAvailability, getEventDetails } from "@/actions/events";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import EventDetails from "./_components/event-details";
@@ -43,6 +43,11 @@ export default async function EventPage({ params }) {
 
   const event = await getEventDetails(params.username,params.eventId);
 
+  const availability = await getEventAvailability(params.eventId)
+
+  // console.log(availability);
+  
+
   if (!event) {
     notFound(); // it will other things itself , that's why how efficient is nextJs in handling of these use cases
   }
@@ -61,7 +66,7 @@ export default async function EventPage({ params }) {
           </div>
         }
       >
-        <BookingForm />
+        <BookingForm event={event} availability={availability}/>
       </Suspense>
     </div>
   );

@@ -201,7 +201,6 @@ export async function getEventDetails(username, eventId) {
 //  Api to fetch availability of user for particular event from our database
 
 export async function getEventAvailability(eventId) {
-
   /*
 
   Humein is event ke details chahiye, lekin sabse pehle humein us user ki availability details fetch karni hain jisne ye event create kiya hai.
@@ -227,9 +226,7 @@ export async function getEventAvailability(eventId) {
   */
 
   const event = await db.event.findUnique({
-    where: {
-      id: eventId,
-    },
+    where: { id: eventId },
 
     // Is event ke details chahiye, lekin humein us user ki availability fetch karni hai jisne ye event create kiya hai.
 
@@ -258,113 +255,44 @@ export async function getEventAvailability(eventId) {
               startTime: true,
               endTime: true,
             },
-
-            // Bookings ka startTime aur endTime bhi chahiye humein,  aur isse hum use karenge taaki jo time slots already booked hain unhe remove kar sakein.
           },
         },
       },
     },
   });
 
-  // console.log(event);
-
   if (!event || !event.user.availability) {
     return [];
   }
 
+  const { availability, bookings } = event.user;
 
-  // Phir us particular user ki availability aur bookings nikaalni hain, jisne ye event banaya hai.
+  const startDate = startOfDay(new Date());
 
-
-  const { bookings, availability } = event.user;
-
-
-  /*
-  
-  Jab hum availability ko store kar rahe hote hain — chahe update kar rahe ho ya create kr rhe ho availability — toh database usse apne time zone mein convert kar leta hai.
-
-  Ab humein availability ka startTime aur endTime ko humare time zone mein convert karna hai. 
-  
-  */
-
-
-  /*
-  
-  Jab baat aati hai user ke time slots display karne ki, toh hum sirf next 30 days ke slots hi display karenge
-
-  startOfDay --> Diye gaye date ka start return karta hai. Result local timezone mein hota hai.
-
-  addDays() function --> Diye gaye number of days kisi date mein add karta hai.
-
-  */
-
-
-
-  const startDate = startOfDay(new Date());  // starting of slots
-
-  const endDate = addDays(startDate, 30); // Diye gaye date mein 30 din add krdega .
-
-
-  // Is array mein hum particular date aur us din ke saare slots store karenge.
+  const endDate = addDays(startDate, 30); // Get availability for the next 30 days
 
   const availableDates = [];
 
-  // Hum apni date ko start se lekar finish tak iterate karenge.
+  for (let date = startDate; date <= endDate; date = addDays(date, 1)) {
 
-  for (let date = startDate; date <= endDate; addDays(startDate, 1)) {
+    const dayOfWeek = format(date, "EEEE").toUpperCase();
 
-    /*
-    
-    Har ek din ke liye hum dekhenge ki us din kaunsa day hai.
-
-    Basically, humne apne project ke liye saari dates select ki hain, lekin maan lo agar hum sirf Mondays select karte,
-
-    to wo sirf Mondays ko hi fetch karega aur Mondays ke slots lega, aur sirf un 30 dinon ke beech ke Mondays ko hi display karega.
-
-    */
-
-    // format : Di hui format mein date ka formatted string return karega.
-
-
-    const dayOfWeek = format(date, "EEEE").toUpperCase(); // Humne us particular din ka day nikal liya.
-
-
-    /*
-    
-    User availability se, jisne event banaya hai, hum check karenge ki kya user us particular din available hai?
-
-    Agar user available hai, to us din ko dayAvailability variable mein assign kar denge. 
-
-    */
-
-
-    const dayAvailability = availability.days.find((d) => d.day === dayOfWeek);
-
+    const dayAvailability = availability?.days?.find(
+      (d) => d.day === dayOfWeek
+    );
 
     if (dayAvailability) {
 
-      // iska matlab hai user us din available hai
-
       const dateStr = format(date, "yyyy-MM-dd");
 
-      // Ab hum apne slots generate karna start karte hain.
-
       const slots = generateAvailableTimeSlots(
-
-        dayAvailability.startTime,  // user ki availability ka startTime
-
-        dayAvailability.endTime, // user ki availability ka endTime
-
+        dayAvailability.startTime,
+        dayAvailability.endTime,
         event.duration,
-
-        bookings, //  taaki hum check kar saken ki koi booking slots ke beech interfere to nahi kar rahi
-
-        dateStr, // current date string
-
-        availability.timeGap //  user sirf certain timeGap ke baad hi call book kar sakta hai
+        bookings,
+        dateStr,
+        availability.timeGap
       );
-
-      // push: Array mein naye elements add karne ke liye.  Ye naye elements ko array ke end mein add karta hai
 
       availableDates.push({
         date: dateStr,
@@ -373,11 +301,8 @@ export async function getEventAvailability(eventId) {
     }
   }
 
-  // console.log(availableDates);
-
   return availableDates;
 }
-
 
 
 function generateAvailableTimeSlots(
@@ -388,14 +313,8 @@ function generateAvailableTimeSlots(
   dateStr,
   timeGap = 0
 ) {
+
   const slots = [];
-
-  // start time aur end time ke liye, jab user ki availability ko database mein ISO string format mein store kar rhe the 
-
-  //  parseISO: Di hui ISO format wali string ko parse karke Date ka instance return karta hai
-
-  //  toISOString(): Date ko ISO format mein string ke roop mein return karta hai
-
 
   let currentTime = parseISO(
     `${dateStr}T${startTime.toISOString().slice(11, 16)}`
@@ -405,16 +324,7 @@ function generateAvailableTimeSlots(
     `${dateStr}T${endTime.toISOString().slice(11, 16)}`
   );
 
-  /*
-  
-  ab hum start time se lekar end time tak iterate karenge, aur har ek time slot ke liye check karenge ki 
-     
-     - ye timeSlot available hai ya nahi (timeGaps, bookings, duration wagairah consider karte hue)
-
-     
-  hume ye bhi ensure karna hai ki hum past ke timeSlots ko show na karein
-
-  */
+  // If the date is today, start from the next available slot after the current time
 
   const now = new Date();
 
@@ -425,32 +335,21 @@ function generateAvailableTimeSlots(
   }
 
   while (currentTime < slotEndTime) {
-    const slotEnd = new Date(currentTime.getTime() + duration * 600000);
 
-
-    /*
-    
-    maan lo start time 9am hai aur end time 12:00pm hai, aur call 30 minute ki hai, to pehla slot 9:30am pe khatam hoga
-
-    is particular slot ke liye, hume check karna hai ki ye slot available hai ya nahi, matlab kya is slot ke liye koi call already booked hai
-
-
-    check karo ki saari bookings mein ye slot na ho, ya ye slot kisi booking ke time ke beech na aaye
-
-    */
+    const slotEnd = new Date(currentTime.getTime() + duration * 60000);
 
     const isSlotAvailable = !bookings.some((booking) => {
+      
       const bookingStart = booking.startTime;
       const bookingEnd = booking.endTime;
-
-      // Ab hum teen alag-alag cases ko compare karenge
-
       return (
         (currentTime >= bookingStart && currentTime < bookingEnd) ||
         (slotEnd > bookingStart && slotEnd <= bookingEnd) ||
         (currentTime <= bookingStart && slotEnd >= bookingEnd)
       );
     });
+
+    // push: Array mein naye elements add karne ke liye.  Ye naye elements ko array ke end mein add karta hai
 
     if (isSlotAvailable) {
       slots.push(format(currentTime, "HH:mm"));
