@@ -19,17 +19,15 @@ export async function createBooking(bookingData) {
 
     // Get the event creator's Google OAuth token from Clerk
 
-    const { data } = (await clerkClient())?.users?.getUserOauthAccessToken(
-      event.user.clerkUserId,
-      "google"
-    );
+    const { data } = await (
+      await clerkClient()
+    )?.users?.getUserOauthAccessToken(event.user.clerkUserId, "google");
 
-    console.log(data);
     
+    // console.log(data);
 
     const token = data[0]?.token;
-    console.log(token);
-    
+    // console.log(token);
 
     if (!token) {
       throw new Error("Event creator has not connected Google Calendar");
@@ -63,7 +61,6 @@ export async function createBooking(bookingData) {
 
     const googleEventId = meetResponse.data.id;
 
-
     // Create booking in database
 
     const booking = await db.booking.create({
@@ -81,7 +78,6 @@ export async function createBooking(bookingData) {
     });
 
     return { success: true, booking, meetLink };
-
   } catch (error) {
     console.error("Error creating booking:", error);
     return { success: false, error: error.message };

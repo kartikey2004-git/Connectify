@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import useFetch from "@/hooks/use-fetch";
 import { updateUsername } from "@/actions/users";
 import { BarLoader } from "react-spinners";
+import { getLatestUpdates } from "@/actions/dashboard";
+import { format } from "date-fns";
 
 const Dashboard = () => {
   const { isLoaded, user } = useUser();
@@ -19,7 +21,6 @@ const Dashboard = () => {
 
   // console.log(user);
   console.log(user?.username);
-  
 
   const {
     register,
@@ -30,8 +31,7 @@ const Dashboard = () => {
     resolver: zodResolver(usernameSchema),
   });
 
-
-  // whenever user object is loaded , we want to provide the default value of input to be username 
+  // whenever user object is loaded , we want to provide the default value of input to be username
 
   useEffect(() => {
     if (isLoaded && user?.username) {
@@ -41,15 +41,21 @@ const Dashboard = () => {
 
   // TO fetch data , we need to use useEffect or to update our data , we would need to write things like loading , error : Fetching an API
 
-  const {
-    loading,
-    error,
-    fn: fnUpdateUsername,
-  } = useFetch(updateUsername);
+  const { loading, error, fn: fnUpdateUsername } = useFetch(updateUsername);
 
   const onSubmit = async (data) => {
     fnUpdateUsername(data.username);
   };
+
+  const {
+    loading: loadingUpdates,
+    data: upcomingMeetings,
+    fn: fnUpdates,
+  } = useFetch(getLatestUpdates);
+
+  useEffect(() => {
+    (async () => await fnUpdates())();
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -60,6 +66,30 @@ const Dashboard = () => {
 
         {/* Latest Updates or whatever if someone has booked call with us the upcoming calls */}
 
+        <CardContent>
+          {!loadingUpdates ? (
+            <div>
+              {upcomingMeetings && upcomingMeetings.length > 0 ? (
+                <ul className="list-disc pl-5">
+                  {upcomingMeetings?.map((meeting) => (
+                    <li key={meeting.id}>
+                      {meeting.event.title} on{" "}
+                      {format(
+                        new Date(meeting.startTime),
+                        "MMM d, yyyy h:mm a"
+                      )}{" "}
+                      with {meeting.name}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No upcoming meetings...</p>
+              )}
+            </div>
+          ) : (
+            <p>Loading updates...</p>
+          )}
+        </CardContent>
       </Card>
 
       <Card>
@@ -70,7 +100,6 @@ const Dashboard = () => {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-
               <div className="flex items-center gap-2">
                 <span>
                   {typeof window !== "undefined" ? window.location.origin : ""}
@@ -95,7 +124,6 @@ const Dashboard = () => {
               <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />
             )}
             <Button type="submit">Update Username</Button>
-
           </form>
         </CardContent>
       </Card>

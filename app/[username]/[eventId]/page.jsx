@@ -9,7 +9,9 @@ import BookingForm from "./_components/booking-form";
 export async function generateMetadata({ params }) {
   // user params and we will fetch the details for that particular event
 
-  const event = await getEventDetails(params.username, params.eventId);
+  const { eventId, username } = params;
+
+  const event = await getEventDetails(username,eventId);
 
   if (!event) {
     return {
