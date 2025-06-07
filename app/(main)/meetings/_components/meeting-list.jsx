@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Calendar, Clock, Video } from "lucide-react";
 import { format } from "date-fns";
+import CancelMeetingButton from "./cancel-meeting";
 
 // import { Button } from "@/components/ui/button";
 // import CancelMeetingButton from "./cancel-meetings";
@@ -62,9 +63,12 @@ const MeetingList = ({ meetings, type }) => {
                 </div>
               )}
             </CardContent>
-            {/* <CardFooter>
-              <CancelMeetingButton/>
-            </CardFooter> */}
+
+            {type === "upcoming" && (
+              <CardFooter className="flex justify-between">
+                <CancelMeetingButton meetingId={meeting.id} />
+              </CardFooter>
+            )}
           </Card>
         );
       })}
