@@ -19,9 +19,9 @@ export async function createBooking(bookingData) {
 
     // Get the event creator's Google OAuth token from Clerk
 
-    const { data } = await (
-      await clerkClient()
-    )?.users?.getUserOauthAccessToken(event.user.clerkUserId, "google");
+    const ClerkClient = await clerkClient()
+
+    const { data } = await ClerkClient?.users?.getUserOauthAccessToken(event.user.clerkUserId, "google");
 
     
     // console.log(data);
