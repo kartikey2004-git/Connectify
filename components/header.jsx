@@ -7,12 +7,10 @@ import UserMenu from "./user-menu";
 import { checkUser } from "@/lib/checkUser";
 
 const Header = async () => {
-
-  await checkUser()
+  await checkUser();
 
   return (
     <nav className="mx-auto py-2 px-4 flex justify-between items-center shadow-md border-b-2">
-
       <Link href={"/"} className="flex items-center">
         <Image
           src={"/banner1.png"}
@@ -24,22 +22,24 @@ const Header = async () => {
       </Link>
 
       <div className="flex items-center gap-4">
-        
         <Link href={"/events?create=true"}>
-          <Button className={"flex items-center gap-2"}>
-            <PenBox size={18} />
-            Create Event
+          <Button className="flex items-center gap-2">
+            <PenBox size={18} className="block md:hidden" />
+            <div className="hidden md:flex items-center gap-2">
+              <PenBox size={18} />
+              <span>Create Event</span>
+            </div>
           </Button>
         </Link>
 
         <SignedOut>
-        <SignInButton forceRedirectUrl="/dashboard">
-        <Button variant={"outline"}>Login</Button>
-        </SignInButton>
+          <SignInButton forceRedirectUrl="/dashboard">
+            <Button variant={"outline"}>Login</Button>
+          </SignInButton>
         </SignedOut>
-        
+
         <SignedIn>
-          <UserMenu/>
+          <UserMenu />
         </SignedIn>
       </div>
     </nav>
@@ -47,8 +47,6 @@ const Header = async () => {
 };
 
 export default Header;
-
-
 
 /* 
 

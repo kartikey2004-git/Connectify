@@ -40,7 +40,7 @@ const AppLayout = ({ children }) => {
     <>
       {!isLoaded && <BarLoader width={"100%"} color="#36d7b7" />}
 
-      <div className="flex flex-col h-screen bg-blue-50 md:flex-row">
+      <div className="flex flex-col h-screen md:flex-row">
         <aside className="hidden md:block w-64 bg-white">
           <nav className="mt-8">
             <ul>

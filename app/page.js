@@ -66,42 +66,47 @@ export default function Home() {
   return (
     <main className="bg-white text-black">
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center px-6 py-20">
-        <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            className="space-y-6 text-center lg:text-left"
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-          >
-            <h1 className="text-5xl -mt-20 md:text-6xl  font-normal tracking-tight">
-              Simplify Your <br /> Scheduling
-            </h1>
-            <p className="text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0">
-              A minimal scheduling tool designed for professionals. Create
-              events, manage availability, and get booked — without the clutter.
-            </p>
-            <GradientButton href="/dashboard">Get Started</GradientButton>
-          </motion.div>
+      <section className="min-h-screen flex items-center justify-center px-6 py-16 md:py-24">
+  <div className="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
+    {/* Left Side: Text */}
+    <motion.div
+      className="space-y-6 text-center lg:text-left"
+      initial="hidden"
+      animate="visible"
+      variants={fadeUp}
+    >
+      <h1 className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight">
+        Simplify Your <br /> Scheduling
+      </h1>
+      <p className="text-base sm:text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0">
+        A minimal scheduling tool designed for professionals. Create events,
+        manage availability, and get booked — without the clutter.
+      </p>
+      <div>
+        <GradientButton href="/dashboard">Get Started</GradientButton>
+      </div>
+    </motion.div>
 
-          <motion.div
-            className="flex items-center justify-center -mt-32"
-            initial="hidden"
-            animate="visible"
-            variants={fadeUp}
-            custom={2}
-          >
-            <div className="relative w-full h-64 border border-neutral-200 rounded-xl overflow-hidden">
-              <Image
-                src="/banner.jpeg"
-                alt="banner"
-                fill
-                className="object-cover rounded-xl"
-              />
-            </div>
-          </motion.div>
-        </div>
-      </section>
+    {/* Right Side: Image */}
+    <motion.div
+      className="flex items-center justify-center"
+      initial="hidden"
+      animate="visible"
+      variants={fadeUp}
+      custom={2}
+    >
+      <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-[28rem] border border-neutral-200 rounded-xl overflow-hidden">
+        <Image
+          src="/banner.jpeg"
+          alt="banner"
+          fill
+          className="object-cover rounded-xl"
+        />
+      </div>
+    </motion.div>
+  </div>
+</section>
+
 
       {/* Features Section */}
       <section className="py-24">
