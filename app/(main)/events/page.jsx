@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getUserEvents } from "@/actions/events";
 import EventCard from "@/components/event-card";
 import React, { Suspense } from "react";
