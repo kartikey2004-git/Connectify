@@ -1,170 +1,194 @@
-import TestimonialCarousel from "@/components/testimonial";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Calendar, Clock, LinkIcon } from "lucide-react";
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Calendar, Clock, Link } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 const features = [
   {
     icon: Calendar,
     title: "Create Events",
-    description: "Easily set up and customize your event types",
+    description:
+      "Set up and customize event types with flexible scheduling options.",
   },
   {
     icon: Clock,
     title: "Manage Availability",
-    description: "Define your availability to streamline scheduling",
+    description: "Define your availability and optimize your schedule.",
   },
   {
-    icon: LinkIcon,
+    icon: Link,
     title: "Custom Links",
-    description: "Share your personalized scheduling link",
+    description: "Share your personalized scheduling link instantly.",
   },
 ];
 
-const howItWorks = [
-  { step: "Sign Up", description: "Create your free Schedulrr account" },
+const testimonials = [
   {
-    step: "Set Availability",
-    description: "Define when you're available for meetings",
+    quote:
+      "This tool completely simplified how I manage my appointments. Clean and effortless.",
+    name: "Sarah Johnson",
+    role: "Marketing Director",
   },
   {
-    step: "Share Your Link",
-    description: "Send your scheduling link to clients or colleagues",
+    quote: "Best scheduling platform I’ve used. Minimal, fast, and reliable.",
+    name: "Mike Chen",
+    role: "Business Consultant",
   },
   {
-    step: "Get Booked",
-    description: "Receive confirmations for new appointments automatically",
+    quote:
+      "My clients love how easy it is to book with me. It’s a game changer.",
+    name: "Emma Davis",
+    role: "Freelance Designer",
   },
 ];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
+  }),
+};
+
+const GradientButton = ({ href, children }) => (
+  <a
+    href={href}
+    className="inline-flex items-center gap-2 px-8 py-4 bg-black text-white font-semibold rounded-full hover:bg-neutral-900 transition"
+  >
+    {children}
+    <ArrowRight className="w-5 h-5" />
+  </a>
+);
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-16">
+    <main className="bg-white text-black">
       {/* Hero Section */}
+      <section className="min-h-screen flex items-center justify-center px-6 py-20">
+        <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            className="space-y-6 text-center lg:text-left"
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+          >
+            <h1 className="text-5xl -mt-20 md:text-6xl  font-normal tracking-tight">
+              Simplify Your <br /> Scheduling
+            </h1>
+            <p className="text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0">
+              A minimal scheduling tool designed for professionals. Create
+              events, manage availability, and get booked — without the clutter.
+            </p>
+            <GradientButton href="/dashboard">Get Started</GradientButton>
+          </motion.div>
 
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-16 px-4 sm:px-8">
-        <div className="lg:w-1/2 text-center lg:text-left">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold pb-4 sm:pb-6 ">
-            Streamline Your Scheduling
-          </h1>
-
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-10">
-            Connectify transforms the way you manage time. Effortlessly schedule
-            events, define your availability, and allow others to book time with
-            you—smoothly and without any trouble.
-          </p>
-
-          <Link href={"/dashboard"}>
-            <Button size={"lg"} className="text-base sm:text-lg">
-              Get Started <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+          <motion.div
+            className="flex items-center justify-center -mt-32"
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            custom={2}
+          >
+            <div className="relative w-full h-64 border border-neutral-200 rounded-xl overflow-hidden">
+              <Image
+                src="/banner.jpeg"
+                alt="banner"
+                fill
+                className="object-cover rounded-xl"
+              />
+            </div>
+          </motion.div>
         </div>
+      </section>
 
-        <div className="lg:w-1/2 flex justify-center">
-          <div className="relative w-64 sm:w-80 md:w-96 aspect-square">
-            <Image
-              src={"/banner.jpeg"}
-              alt="Scheduling illustration"
-              fill
-              style={{ objectFit: "contain" }}
-            />
+      {/* Features Section */}
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            Key Features
+          </motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-10">
+            {features.map((f, i) => (
+              <motion.div
+                key={i}
+                className="p-8 border border-neutral-200 rounded-2xl text-center"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+              >
+                <f.icon className="w-12 h-12 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
+                <p className="text-neutral-600">{f.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Key Features Section */}
-
-      <div className="mb-24">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Key Features
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => {
-            return (
-              <Card key={index}>
-                <CardHeader>
-                  <feature.icon className="w-12 h-12 mb-4 mx-auto" />
-                  <CardTitle className="text-center">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-center text-gray-600">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Testimonials Section */}
-
-      <div className="mb-24">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          What Our Users say
-        </h2>
-        <TestimonialCarousel />
-      </div>
-
-      {/* How It Works Section */}
-
-      <div className="mb-24">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          How it Works
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {howItWorks.map((step, index) => (
-            <div key={index} className="text-center">
-              <div className="bg-gray-200 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <span className="font-bold text-xl">
-                  {index + 1}
-                </span>
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{step.step}</h3>
-              <h3 className="text-gray-600">{step.description}</h3>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* CTA (call to action) Section */}
-
-      <div className="border border-gray-200 rounded-2xl p-6 sm:p-8 lg:p-12 text-center shadow-md max-w-3xl mx-auto bg-white">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 ">
-          Ready to Simplify Your Scheduling with
-        </h2>
-
-        <Link href="/" className="inline-flex justify-center mb-6">
-          <Image
-            src="/banner1.png"
-            width={180}
-            height={70}
-            alt="Schedulrr Logo"
-            className="h-30 w-auto"
-          />
-        </Link>
-
-        <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-8">
-          Join thousands of professionals who trust Connectify for efficient
-          time management.
-        </p>
-
-        <Link href="/dashboard">
-          <Button
-            size="lg"
-            className="text-lg sm:text-xl px-6 py-3 rounded-full"
+      {/* Testimonials */}
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2
+            className="text-3xl md:text-4xl font-bold text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
           >
-            Start for free <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        </Link>
-      </div>
+            What People Say
+          </motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-10">
+            {testimonials.map((t, i) => (
+              <motion.div
+                key={i}
+                className="p-8 border border-neutral-200 rounded-2xl"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+              >
+                <p className="italic mb-6 text-neutral-700">
+                  &quot;{t.quote}&quot;
+                </p>
+                <div className="font-semibold">{t.name}</div>
+                <div className="text-sm text-neutral-500">{t.role}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 bg-black text-white text-center">
+        <motion.div
+          className="max-w-3xl mx-auto"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeUp}
+        >
+          <h2 className="text-4xl font-bold mb-6">
+            Ready to Simplify Scheduling?
+          </h2>
+          <p className="text-neutral-300 mb-8">
+            Join professionals who manage their time the smart way.
+          </p>
+          <GradientButton href="/dashboard">Start Free</GradientButton>
+        </motion.div>
+      </section>
     </main>
   );
 }

@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import CreateEventDrawer from "@/components/create-event";
+import CreateEventDrawerClient from "@/components/create-event-client-wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,7 +38,7 @@ export default function RootLayout({ children }) {
             </div>
           </footer>
 
-          <CreateEventDrawer />
+          <CreateEventDrawerClient />
         </body>
       </html>
     </ClerkProvider>
