@@ -20,7 +20,7 @@ const Dashboard = () => {
   // useUser() : gives you access to the current signed-in user's details, authentication state, and some utility functions
 
   // console.log(user);
-  console.log(user?.username);
+  // console.log(user?.username);
 
   const {
     register,

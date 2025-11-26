@@ -6,11 +6,12 @@ import React from "react";
 
 // this is one of major reason using nextJS , it provides SEO capabilites to our app and make our apps rank on google
 
-
 export async function generateMetadata({ params }) {
   // user params and we will fetch the data for that user
 
-  const user = await getUserByUsername(params.username);
+  const { username } = await params;
+
+  const user = await getUserByUsername(username);
 
   // console.log(user)
 
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }) {
       description: `Book an event with ${user.name}. View available public events and schedules`,
       type: "profile",
     },
-    
+
     twitter: {
       card: "summary",
       title: `${user.name}'s Profile | Connectify`,
@@ -40,7 +41,6 @@ export async function generateMetadata({ params }) {
     },
   };
 }
-
 
 export default async function UserPage({ params }) {
   // console.log(params.username);

@@ -55,7 +55,7 @@ const fadeUp = {
 const GradientButton = ({ href, children }) => (
   <a
     href={href}
-    className="inline-flex items-center gap-2 px-8 py-4 bg-black text-white font-semibold rounded-full hover:bg-neutral-900 transition"
+    className="inline-flex items-center gap-2 px-8 py-4 bg-black text-white font-semibold rounded-md hover:bg-neutral-900 transition"
   >
     {children}
     <ArrowRight className="w-5 h-5" />
@@ -67,46 +67,45 @@ export default function Home() {
     <main className="bg-white text-black">
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center px-6 py-16 md:py-24">
-  <div className="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
-    {/* Left Side: Text */}
-    <motion.div
-      className="space-y-6 text-center lg:text-left"
-      initial="hidden"
-      animate="visible"
-      variants={fadeUp}
-    >
-      <h1 className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight">
-        Simplify Your <br /> Scheduling
-      </h1>
-      <p className="text-base sm:text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0">
-        A minimal scheduling tool designed for professionals. Create events,
-        manage availability, and get booked — without the clutter.
-      </p>
-      <div>
-        <GradientButton href="/dashboard">Get Started</GradientButton>
-      </div>
-    </motion.div>
+        <div className="max-w-6xl mx-auto grid gap-12 lg:grid-cols-2 items-center">
+          {/* Left Side: Text */}
+          <motion.div
+            className="space-y-6 text-center lg:text-left"
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+          >
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight">
+              Simplify Your <br /> Scheduling
+            </h1>
+            <p className="text-base sm:text-lg text-neutral-600 max-w-xl mx-auto lg:mx-0">
+              A minimal scheduling tool designed for professionals. Create
+              events, manage availability, and get booked — without the clutter.
+            </p>
+            <div>
+              <GradientButton href="/dashboard">Get Started</GradientButton>
+            </div>
+          </motion.div>
 
-    {/* Right Side: Image */}
-    <motion.div
-      className="flex items-center justify-center"
-      initial="hidden"
-      animate="visible"
-      variants={fadeUp}
-      custom={2}
-    >
-      <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-[28rem] border border-neutral-200 rounded-xl overflow-hidden">
-        <Image
-          src="/banner.jpeg"
-          alt="banner"
-          fill
-          className="object-cover rounded-xl"
-        />
-      </div>
-    </motion.div>
-  </div>
-</section>
-
+          {/* Right Side: Image */}
+          <motion.div
+            className="flex items-center justify-center"
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            custom={2}
+          >
+            <div className="relative w-full h-56 sm:h-72 md:h-80 lg:h-[28rem] border border-neutral-200 rounded-xl overflow-hidden">
+              <Image
+                src="/banner.jpeg"
+                alt="banner"
+                fill
+                className="object-cover rounded-xl"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Features Section */}
       <section className="py-24">
@@ -177,7 +176,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-black text-white text-center">
+      <section className="py-24 text-black bg-white text-center">
         <motion.div
           className="max-w-3xl mx-auto"
           initial="hidden"
@@ -185,10 +184,10 @@ export default function Home() {
           viewport={{ once: true }}
           variants={fadeUp}
         >
-          <h2 className="text-4xl font-bold mb-6">
+          <h2 className="text-4xl font-bold mb-2">
             Ready to Simplify Scheduling?
           </h2>
-          <p className="text-neutral-300 mb-8">
+          <p className="text-neutral-700 mb-8">
             Join professionals who manage their time the smart way.
           </p>
           <GradientButton href="/dashboard">Start Free</GradientButton>
