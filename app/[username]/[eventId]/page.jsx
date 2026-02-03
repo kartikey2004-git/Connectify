@@ -9,9 +9,9 @@ import BookingForm from "./_components/booking-form";
 export async function generateMetadata({ params }) {
   // user params and we will fetch the details for that particular event
 
-  const { eventId, username } = params;
+  const { eventId, username } = await params;
 
-  const event = await getEventDetails(username,eventId);
+  const event = await getEventDetails(username, eventId);
 
   if (!event) {
     return {
@@ -43,12 +43,13 @@ export async function generateMetadata({ params }) {
 export default async function EventPage({ params }) {
   // console.log(params.username);
 
-  const event = await getEventDetails(params.username,params.eventId);
+  const { username, eventId } = await params;
 
-  const availability = await getEventAvailability(params.eventId)
+  const event = await getEventDetails(username, eventId);
+
+  const availability = await getEventAvailability(eventId);
 
   // console.log(availability);
-  
 
   if (!event) {
     notFound(); // it will other things itself , that's why how efficient is nextJs in handling of these use cases
@@ -57,24 +58,21 @@ export default async function EventPage({ params }) {
   // console.log(event);
 
   return (
-    <div className="flex flex-col justify-center lg:flex-row px-4 py-8">
+    <div className="flex flex-col justify-center lg:flex-row px-4 py-8 gap-8 max-w-6xl mx-auto">
+      <EventDetails event={event} />
 
-       <EventDetails event = {event} />
-
-       <Suspense
+      <Suspense
         fallback={
-          <div className="flex justify-center items-center p-4">
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-transparent" />
+          <div className="flex justify-center items-center p-8">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted border-t-primary" />
           </div>
         }
       >
-        <BookingForm event={event} availability={availability}/>
+        <BookingForm event={event} availability={availability} />
       </Suspense>
     </div>
   );
 }
-
-
 
 /* 
 

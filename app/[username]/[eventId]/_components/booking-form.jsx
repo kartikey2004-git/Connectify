@@ -1,3 +1,4 @@
+
 "use client";
 
 import { createBooking } from "@/actions/bookings";
@@ -5,6 +6,7 @@ import { bookingSchema } from "@/app/lib/validators";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import useFetch from "@/hooks/use-fetch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -44,7 +46,7 @@ const BookingForm = ({ event, availability }) => {
 
   const timeSlots = selectedDate
     ? availability.find(
-        (day) => day.date === format(selectedDate, "yyyy-MM-dd")
+        (day) => day.date === format(selectedDate, "yyyy-MM-dd"),
       )?.slots || []
     : [];
 
@@ -57,7 +59,7 @@ const BookingForm = ({ event, availability }) => {
     }
 
     const startTime = new Date(
-      `${format(selectedDate, "yyyy-MM-dd")}T${selectedTime}`
+      `${format(selectedDate, "yyyy-MM-dd")}T${selectedTime}`,
     );
 
     const endTime = new Date(startTime.getTime() + event.duration * 60000);
@@ -71,22 +73,23 @@ const BookingForm = ({ event, availability }) => {
       additionalInfo: data.additionalInfo,
     };
 
-    await fnCreateBooking(bookingData)
-
+    await fnCreateBooking(bookingData);
   };
 
   if (data) {
     return (
-      <div className="text-center p-10 border bg-white">
-        <h2 className="text-2xl font-bold mb-4">Booking successful!</h2>
+      <div className="text-center p-8 bg-card rounded-xl border shadow-sm">
+        <h2 className="text-2xl font-semibold mb-4 text-foreground">
+          Booking successful!
+        </h2>
         {data.meetLink && (
-          <p>
+          <p className="text-muted-foreground">
             Join the meeting:{" "}
             <a
               href={data.meetLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
+              className="text-primary hover:underline font-medium"
             >
               {data.meetLink}
             </a>
@@ -96,10 +99,9 @@ const BookingForm = ({ event, availability }) => {
     );
   }
 
-
   return (
-    <div className="flex flex-col gap-8 p-10 border bg-white">
-      <div className="md:h-96 flex flex-col md:flex-row gap-5 ">
+    <div className="flex flex-col gap-8 p-8 bg-card rounded-xl border shadow-sm">
+      <div className="md:h-96 flex flex-col md:flex-row gap-6">
         <div className="w-full">
           <DayPicker
             mode="single"
@@ -112,17 +114,17 @@ const BookingForm = ({ event, availability }) => {
             modifiers={{ available: availableDays }}
             modifiersStyles={{
               available: {
-                background: "lightblue",
-                borderRadius: 100,
+                background: "hsl(var(--primary))",
+                borderRadius: "100%",
               },
             }}
           />
         </div>
 
-        <div className="w-full h-full md:overflow-scroll no-scrollbar">
+        <div className="w-full h-full md:overflow-scroll scrollbar-hide">
           {selectedDate && (
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2">
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-4 text-foreground">
                 Available Time Slots
               </h3>
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
@@ -132,6 +134,7 @@ const BookingForm = ({ event, availability }) => {
                       key={slot}
                       onClick={() => setSelectedTime(slot)}
                       variant={selectedTime === slot ? "default" : "outline"}
+                      size="sm"
                     >
                       {slot}
                     </Button>
@@ -144,23 +147,27 @@ const BookingForm = ({ event, availability }) => {
       </div>
 
       {selectedTime && (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <Input {...register("name")} placeholder="Your Name" />
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-2">
+            <Label htmlFor="name">Your Name</Label>
+            <Input id="name" {...register("name")} placeholder="Your Name" />
             {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name.message}</p>
+              <p className="text-destructive text-sm">{errors.name.message}</p>
             )}
           </div>
 
-          <div>
-            <Input {...register("email")} placeholder="Your Email" />
+          <div className="space-y-2">
+            <Label htmlFor="email">Your Email</Label>
+            <Input id="email" {...register("email")} placeholder="Your Email" />
             {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
+              <p className="text-destructive text-sm">{errors.email.message}</p>
             )}
           </div>
 
-          <div>
+          <div className="space-y-2">
+            <Label htmlFor="additionalInfo">Additional Information</Label>
             <Textarea
+              id="additionalInfo"
               {...register("additionalInfo")}
               placeholder="Additional Information"
             />

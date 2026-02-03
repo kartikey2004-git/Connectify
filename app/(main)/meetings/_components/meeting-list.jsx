@@ -17,33 +17,46 @@ import CancelMeetingButton from "./cancel-meeting";
 
 const MeetingList = ({ meetings, type }) => {
   if (meetings.length === 0) {
-    return <p>No {type} meetings found</p>;
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">No {type} meetings found</p>
+      </div>
+    );
   }
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {meetings.map((meeting) => {
         return (
-          <Card key={meeting.id} className="flex flex-col justify-between">
+          <Card
+            key={meeting.id}
+            className="flex flex-col justify-between hover:shadow-md transition-shadow"
+          >
             <CardHeader>
-              <CardTitle>{meeting.event.title}</CardTitle>
-              <CardDescription>with {meeting.name}</CardDescription>
-
-              <CardDescription>
-                &quot;{meeting.additionalInfo}&quot;
+              <CardTitle className="text-lg font-semibold">
+                {meeting.event.title}
+              </CardTitle>
+              <CardDescription className="text-sm">
+                with {meeting.name}
               </CardDescription>
+
+              {meeting.additionalInfo && (
+                <CardDescription className="text-sm italic">
+                  &quot;{meeting.additionalInfo}&quot;
+                </CardDescription>
+              )}
             </CardHeader>
 
-            <CardContent>
-              <div className="flex items-center mb-2">
-                <Calendar className="mr-2 h-4 w-4" />
-                <span>
+            <CardContent className="space-y-3">
+              <div className="flex items-center text-muted-foreground">
+                <Calendar className="mr-3 h-4 w-4" />
+                <span className="text-sm">
                   {format(new Date(meeting.startTime), "MMMM dd, yyyy")}
                 </span>
               </div>
 
-              <div className="flex items-center mb-2">
-                <Clock className="mr-2 h-4 w-4" />
-                <span>
+              <div className="flex items-center text-muted-foreground">
+                <Clock className="mr-3 h-4 w-4" />
+                <span className="text-sm">
                   {format(new Date(meeting.startTime), "h:mm a")} -{" "}
                   {format(new Date(meeting.endTime), "h:mm a")}
                 </span>
@@ -51,12 +64,12 @@ const MeetingList = ({ meetings, type }) => {
 
               {meeting.meetLink && (
                 <div className="flex items-center">
-                  <Video className="mr-2 w-4 h-4" />
+                  <Video className="mr-3 w-4 h-4 text-muted-foreground" />
                   <a
                     href={meeting.meetLink}
                     target="_blank"
-                    rel="nooopener noreferrer"
-                    className="text-blue-500 hover:underline"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-medium text-sm"
                   >
                     Join Meeting
                   </a>
@@ -65,7 +78,7 @@ const MeetingList = ({ meetings, type }) => {
             </CardContent>
 
             {type === "upcoming" && (
-              <CardFooter className="flex justify-between">
+              <CardFooter className="flex justify-between pt-4">
                 <CancelMeetingButton meetingId={meeting.id} />
               </CardFooter>
             )}

@@ -1,27 +1,19 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { PenBox } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import UserMenu from "./user-menu";
 
-
 const Header = async () => {
-
-
   return (
-    <nav className="mx-auto px-4 flex justify-between items-center shadow-md border-b-2">
+    <nav className="mx-auto p-4 flex justify-between items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <Link href={"/"} className="flex items-center">
-        <Image
-          src={"/banner1.png"}
-          width={"200"}
-          height={"200"}
-          alt="Schedulrr Logo"
-          className="h-25 w-auto"
-        />
+        <span className="text-2xl font-semibold tracking-tight">
+          Connectify
+        </span>
       </Link>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <Link href={"/events?create=true"}>
           <Button className="flex items-center gap-2">
             <PenBox size={18} className="block md:hidden" />

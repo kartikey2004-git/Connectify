@@ -2,7 +2,6 @@ import { getUserByUsername } from "@/actions/users";
 import EventCard from "@/components/event-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { notFound } from "next/navigation";
-import React from "react";
 
 // this is one of major reason using nextJS , it provides SEO capabilites to our app and make our apps rank on google
 
@@ -45,7 +44,9 @@ export async function generateMetadata({ params }) {
 export default async function UserPage({ params }) {
   // console.log(params.username);
 
-  const user = await getUserByUsername(params.username);
+  const { username } = await params;
+
+  const user = await getUserByUsername(username);
 
   // console.log(user)
 
@@ -54,9 +55,9 @@ export default async function UserPage({ params }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col items-center mb-8">
-        <Avatar className="w-28 h-28 mb-4 border-4  shadow-lg rounded-full">
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="flex flex-col items-center mb-12">
+        <Avatar className="w-24 h-24 mb-6 border-4 shadow-lg rounded-full">
           {user?.imageUrl ? (
             <AvatarImage
               src={user.imageUrl}
@@ -70,25 +71,27 @@ export default async function UserPage({ params }) {
           )}
         </Avatar>
 
-        <h1 className="text-3xl font-semibold mb-2">{user.name}</h1>
+        <h1 className="text-3xl font-semibold mb-3 text-foreground">
+          {user.name}
+        </h1>
 
-        <p className="text-gray-600 text-center">
+        <p className="text-muted-foreground text-center max-w-md leading-relaxed">
           Welcome to my scheduling page. Please select an event below to book a
           call with me
         </p>
       </div>
 
-      {/* check user has events or not */}
-
       {user.events.length === 0 ? (
-        <p className="text-center text-gray-600">No public events available</p>
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">No public events available</p>
+        </div>
       ) : (
-        <div className="grid md:grid-cols-2 gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {user.events.map((event) => {
             return (
               <EventCard
                 key={event.id}
-                username={params.username}
+                username={username}
                 event={event}
                 isPublic
               />

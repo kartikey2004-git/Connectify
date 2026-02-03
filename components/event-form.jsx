@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
 import { eventSchema } from "@/app/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 import {
   Select,
   SelectContent,
@@ -17,10 +18,8 @@ import useFetch from "@/hooks/use-fetch";
 import { createEvent } from "@/actions/events";
 import { useRouter } from "next/navigation";
 
-
-
-const EventForm = ({onSubmitForm}) => {
-  const router = useRouter()
+const EventForm = ({ onSubmitForm }) => {
+  const router = useRouter();
 
   // useRouter() : This hook gives access the router object inside the Pages Router.
 
@@ -37,106 +36,68 @@ const EventForm = ({onSubmitForm}) => {
     },
   });
 
-  const { 
-    error, 
-    loading, 
-    fn: fnCreateEvent 
-  } = useFetch(createEvent);
+  const { error, loading, fn: fnCreateEvent } = useFetch(createEvent);
 
   const onSubmit = async (data) => {
-    await fnCreateEvent(data)
+    await fnCreateEvent(data);
 
     if (!loading && !error) {
-      onSubmitForm()
-      router.refresh()
+      onSubmitForm();
+      router.refresh();
     }
   };
 
   return (
     <form
-      className="px-5 flex flex-col gap-4"
+      className="px-5 flex flex-col gap-5"
       onSubmit={handleSubmit(onSubmit)}
     >
-
-      <div>
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Event Title
-        </label>
-
-        <Input id="title" {...register("title")} className="mt-1" />
-
+      <div className="space-y-2">
+        <Label htmlFor="title">Event Title</Label>
+        <Input id="title" {...register("title")} />
         {errors.title && (
-          <p className="text-red-600 text-sm mt-1">{errors.title.message}</p>
+          <p className="text-destructive text-sm">{errors.title.message}</p>
         )}
       </div>
 
-
-      <div>
-        <label
-          htmlFor="description"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Event Description
-        </label>
-
-        <Input id="description" {...register("description")} className="mt-1" />
-
+      <div className="space-y-2">
+        <Label htmlFor="description">Event Description</Label>
+        <Input id="description" {...register("description")} />
         {errors.description && (
-          <p className="text-red-600 text-sm mt-1">
+          <p className="text-destructive text-sm">
             {errors.description.message}
           </p>
         )}
       </div>
 
-
-      <div>
-        <label
-          htmlFor="duration"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Duration ( minutes )
-        </label>
-
+      <div className="space-y-2">
+        <Label htmlFor="duration">Duration (minutes)</Label>
         <Input
           id="duration"
           {...register("duration", {
             valueAsNumber: true,
           })}
           type="number"
-          className="mt-1"
         />
-
         {errors.duration && (
-          <p className="text-red-600 text-sm mt-1">{errors.duration.message}</p>
+          <p className="text-destructive text-sm">{errors.duration.message}</p>
         )}
       </div>
 
-
-      <div>
-        <label
-          htmlFor="isPrivate"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Event Privacy
-        </label>
-
+      <div className="space-y-2">
+        <Label htmlFor="isPrivate">Event Privacy</Label>
         <Controller
           name="isPrivate"
           control={control}
-
           render={({ field }) => (
             <Select
               value={field.value ? "true" : "false"}
-
               onValueChange={(value) => field.onChange(value === "true")}
             >
-              <SelectTrigger className="mt-1">
+              <SelectTrigger>
                 <SelectValue placeholder="Select Privacy" />
               </SelectTrigger>
-              
+
               <SelectContent>
                 <SelectItem value="true">Private</SelectItem>
                 <SelectItem value="false">Public</SelectItem>
@@ -144,20 +105,16 @@ const EventForm = ({onSubmitForm}) => {
             </Select>
           )}
         />
-
         {errors.isPrivate && (
-          <p className="text-red-600 text-sm mt-1">
-            {errors.isPrivate.message}
-          </p>
+          <p className="text-destructive text-sm">{errors.isPrivate.message}</p>
         )}
       </div>
 
-      {error && <p className="text-red-600 text-xs mt-1">{error.message}</p>}
+      {error && <p className="text-destructive text-sm">{error.message}</p>}
 
-      <Button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading} className="w-full">
         {loading ? "Submitting..." : "Create Event"}
       </Button>
-
     </form>
   );
 };
@@ -227,6 +184,4 @@ field — an object with
           - Agar value kuch aur jaise "false" hai, toh value === "true" false return karega.
 
               - ( field.onChange(false) ka matlab hai ki field ki value ko false set karna. )
-     
-*/
-
+     */

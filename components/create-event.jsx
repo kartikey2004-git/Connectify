@@ -17,10 +17,9 @@ import { useSearchParams, useRouter } from "next/navigation";
 import EventForm from "./event-form";
 
 export default function CreateEventDrawer() {
-
   const [IsOpen, setIsOpen] = useState(false);
 
-  // state to tracker our drawer is open or not 
+  // state to tracker our drawer is open or not
 
   // useRouter() : This hook gives access the router object inside the Pages Router.
 
@@ -28,7 +27,7 @@ export default function CreateEventDrawer() {
 
   const router = useRouter();
   // console.log(router);
-  
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -46,8 +45,28 @@ export default function CreateEventDrawer() {
     }
   };
 
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === "Escape" && IsOpen) {
+        handleClose();
+      }
+    };
+
+    if (IsOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleEsc);
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, [IsOpen, handleClose]);
+
   return (
-    <Drawer open={IsOpen} onClose={handleClose}>
+    <Drawer open={IsOpen} onClose={handleClose} direction="right">
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create New Event</DrawerTitle>

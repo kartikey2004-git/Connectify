@@ -122,14 +122,6 @@
 }
 
 @layer utilities {
-  .gradient-title {
-    @apply font-extrabold bg-gradient-to-b from-indigo-500 via-sky-400 to-cyan-300 bg-clip-text text-transparent 
-      tracking-tighter pb-4 pr-2 transition-all duration-300 ease-in-out;
-  }
-  /* .gradient-title:hover {
-    @apply from-indigo-400 via-sky-300 to-cyan-200 scale-105;
-  } */
-
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -139,14 +131,15 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 }
 
 
-.scrollbar-hide {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}

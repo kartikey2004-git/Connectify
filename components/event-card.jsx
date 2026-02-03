@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -16,14 +16,12 @@ import useFetch from "@/hooks/use-fetch";
 import { DeleteEvent } from "@/actions/events";
 
 const EventCard = ({ event, username, isPublic = false }) => {
+  // state to check copy process is going on or right or not
 
-  // state to check copy process is going on or right or not 
-
-  const [isCopied, setIsCopied] = useState(false)
-  const router = useRouter()
+  const [isCopied, setIsCopied] = useState(false);
+  const router = useRouter();
 
   // we use router to refreshing our page after deleting the event
-  
 
   // useRouter() : This hook allows you to programmatically change routes inside Client Component.
 
@@ -33,70 +31,83 @@ const EventCard = ({ event, username, isPublic = false }) => {
 
   const handleCopy = async () => {
     try {
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/${username}/${event.id}`,
+      );
 
-      await navigator.clipboard.writeText(`${window.location.origin}/${username}/${event.id}`)
-
-      setIsCopied(true)
-      setTimeout(() => setIsCopied(false),2000)
-
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
     } catch (error) {
       console.error("Failed to copy");
     }
-  }
+  };
 
-
-  const { 
-    loading,
-    fn : fnDeleteEvent
-  } = useFetch(DeleteEvent)
+  const { loading, fn: fnDeleteEvent } = useFetch(DeleteEvent);
 
   const handleDelete = async () => {
+    // I will prompt the user by saying that are you sure you want to delete this event
 
-    // I will prompt the user by saying that are you sure you want to delete this event 
-
-    if(window?.confirm("Are you sure you want to delete this event?")) {
-      await fnDeleteEvent(event.id)
-      router.refresh()
+    if (window?.confirm("Are you sure you want to delete this event?")) {
+      await fnDeleteEvent(event.id);
+      router.refresh();
     }
-  }
+  };
 
   const handleCardClick = (e) => {
-    if( e.target.tagName !== "BUTTON" && e.target.tagName !== "SVG") {
+    if (e.target.tagName !== "BUTTON" && e.target.tagName !== "SVG") {
       window?.open(
         `${window?.location.origin}/${username}/${event.id}`,
-        "_blank"
-      )
+        "_blank",
+      );
     }
-  }
+  };
 
   return (
-    <Card className="flex flex-col justify-between cursor-pointer" onClick = { handleCardClick }>
+    <Card
+      className="flex flex-col justify-between cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
+      onClick={handleCardClick}
+    >
       <CardHeader>
-        <CardTitle className="text-2xl">{event.title}</CardTitle>
+        <CardTitle className="text-xl font-semibold">{event.title}</CardTitle>
 
-        <CardDescription className="flex justify-between">
-          <span>
+        <CardDescription className="flex justify-between items-center">
+          <span className="text-sm">
             {event.duration} mins | {event.isPrivate ? "Private" : "Public"}
           </span>
 
-          <span>{event._count.bookings} Bookings</span>
+          <span className="bg-muted px-2 py-1 rounded-md text-xs font-medium">
+            {event._count.bookings} Bookings
+          </span>
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <p>{event.description}</p>
+        <p className="text-sm text-muted-foreground line-clamp-3">
+          {event.description}
+        </p>
       </CardContent>
 
       {!isPublic && (
-        <CardFooter className="flex gap-2">
-          <Button variant="outline" className="flex items-center" onClick = {handleCopy}>
-            <Link className="mr-2 h-4 w-4"/>
+        <CardFooter className="flex gap-2 pt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center hover:bg-accent transition-colors"
+            onClick={handleCopy}
+          >
+            <Link className="mr-2 h-4 w-4" />
             {isCopied ? "Copied!" : "Copy Link"}
           </Button>
 
-          <Button variant="destructive" onClick={handleDelete} disabled = {loading}>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleDelete}
+            disabled={loading}
+            className="hover:bg-destructive/90 transition-colors"
+          >
             <Trash2 className="mr-2 h-4 w-4" />
-             {loading ? "Deleting...." : "Delete"}
+            {loading ? "Deleting...." : "Delete"}
           </Button>
         </CardFooter>
       )}
@@ -106,12 +117,10 @@ const EventCard = ({ event, username, isPublic = false }) => {
 
 export default EventCard;
 
-
-
 // {event.description.substring(0,event.description.indexOf("."))}  if needed
 
 // we add copy link button for event link and delete event button
 
-// on our custom user page , we only want to show public events , on isPublic = true , we show public events 
+// on our custom user page , we only want to show public events , on isPublic = true , we show public events
 
 // and we will not render the copy link and delete event button

@@ -18,20 +18,16 @@ export default function RootLayout({ children }) {
         <body className={inter.className}>
           <Header />
 
-          <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-            {children}
-          </main>
+          <main className="min-h-screen bg-background">{children}</main>
 
-          <footer className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 py-8 mt-12 shadow-inner">
+          <footer className="bg-muted/50 border-t py-8 mt-12">
             <div className="max-w-screen-xl mx-auto px-4 text-center">
-              <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
+              <p className="text-sm font-medium text-muted-foreground">
                 Made with <span className="text-red-500">❤️</span> by{" "}
-                <span className="font-semibold">
-                  Kartikey
-                </span>{" "}
+                <span className="font-semibold text-foreground">Kartikey</span>{" "}
                 🎀😎
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+              <p className="text-xs text-muted-foreground mt-2">
                 © {new Date().getFullYear()} All rights reserved.
               </p>
             </div>
