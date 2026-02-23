@@ -1,38 +1,43 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { PenBox } from "lucide-react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import UserMenu from "./user-menu";
+import ThemeToggle from "./theme-toggle";
 
 const Header = async () => {
   return (
-    <nav className="mx-auto p-4 flex justify-between items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <Link href={"/"} className="flex items-center">
-        <span className="text-2xl font-semibold tracking-tight">
-          Connectify
-        </span>
-      </Link>
-
-      <div className="flex items-center gap-3">
-        <Link href={"/events?create=true"}>
-          <Button className="flex items-center gap-2">
-            <PenBox size={18} className="block md:hidden" />
-            <div className="hidden md:flex items-center gap-2">
-              <PenBox size={18} />
-              <span>Create Event</span>
-            </div>
-          </Button>
+    <nav className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+      <div className="app-container flex h-16 items-center justify-between gap-4">
+        <Link href={"/"} className="flex items-center">
+          <span className="text-xl font-semibold tracking-tight sm:text-2xl">
+            Connectify
+          </span>
         </Link>
 
-        <SignedOut>
-          <SignInButton forceRedirectUrl="/dashboard">
-            <Button variant={"outline"}>Login</Button>
-          </SignInButton>
-        </SignedOut>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
 
-        <SignedIn>
-          <UserMenu />
-        </SignedIn>
+          <Link href={"/events?create=true"}>
+            <Button className="flex items-center gap-2">
+              <PenBox size={18} className="block md:hidden" />
+              <div className="hidden md:flex items-center gap-2">
+                <PenBox size={18} />
+                <span>Create Event</span>
+              </div>
+            </Button>
+          </Link>
+
+          <SignedOut>
+            <SignInButton forceRedirectUrl="/dashboard">
+              <Button variant={"outline"}>Login</Button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserMenu />
+          </SignedIn>
+        </div>
       </div>
     </nav>
   );

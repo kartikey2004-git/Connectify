@@ -3,8 +3,13 @@ import "./globals.css";
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import CreateEventDrawerClient from "@/components/create-event-client-wrapper";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata = {
   title: "Connectify",
@@ -14,26 +19,48 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <Header />
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){try{var saved=localStorage.getItem('theme');var systemDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var theme=saved|| (systemDark?'dark':'light');if(theme==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}})();`,
+            }}
+          />
+        </head>
+        <body
+          className={`${inter.variable} ${inter.className} flex min-h-screen flex-col bg-background text-foreground antialiased`}
+        >
+          <ThemeProvider>
+            <Header />
 
-          <main className="min-h-screen bg-background">{children}</main>
+            <main>{children}</main>
 
-          <footer className="bg-muted/50 border-t py-8 mt-12">
-            <div className="max-w-screen-xl mx-auto px-4 text-center">
-              <p className="text-sm font-medium text-muted-foreground">
-                Made with <span className="text-red-500">❤️</span> by{" "}
-                <span className="font-semibold text-foreground">Kartikey</span>{" "}
-                🎀😎
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                © {new Date().getFullYear()} All rights reserved.
-              </p>
-            </div>
-          </footer>
+            <footer className="mt-auto border-t border-border bg-background/95">
+              <div className="app-container py-8 sm:py-10">
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <p className="text-base font-semibold tracking-tight text-foreground">
+                      Connectify
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Scheduling infrastructure for focused teams.
+                    </p>
+                  </div>
 
-          <CreateEventDrawerClient />
+                  <div className="text-left sm:text-right">
+                    <p className="text-xs font-medium uppercase text-muted-foreground">
+                      Built by Kartikey
+                    </p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      © {new Date().getFullYear()} All rights reserved.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </footer>
+
+            <CreateEventDrawerClient />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

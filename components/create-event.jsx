@@ -66,7 +66,16 @@ export default function CreateEventDrawer() {
   }, [IsOpen, handleClose]);
 
   return (
-    <Drawer open={IsOpen} onClose={handleClose} direction="right">
+    <Drawer
+      open={IsOpen}
+      onOpenChange={(open) => {
+        if (open) {
+          setIsOpen(true);
+          return;
+        }
+        handleClose();
+      }}
+    >
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Create New Event</DrawerTitle>

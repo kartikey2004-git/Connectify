@@ -23,7 +23,7 @@ export default function CancelMeetingButton({ meetingId }) {
       <Button variant="destructive" onClick={handleCancel} disabled={loading}>
         {loading ? "Canceling..." : "Cancel Meeting"}
       </Button>
-      {error && <span className="text-red-500 text-sm">{error.message}</span>}
+      {error && <span className="text-destructive text-sm">{error.message}</span>}
     </div>
   );
 }

@@ -11,7 +11,7 @@ export const metadata = {
 const MeetingPage = () => {
   return (
     <Tabs defaultValue="upcoming" className="space-y-6">
-      <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+      <TabsList className="grid w-full grid-cols-2 max-w-100">
         <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
         <TabsTrigger value="past">Past</TabsTrigger>
       </TabsList>

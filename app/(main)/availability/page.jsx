@@ -9,7 +9,7 @@ const AvailabilityPage = async () => {
 
   const availability = await getUserAvailability();
 
-  console.log("Get user Availability Page :",availability); 
+  // console.log("Get user Availability Page :",availability); 
   
   // it gives null because we don't have any availability , if this i will return the default availability 
 
