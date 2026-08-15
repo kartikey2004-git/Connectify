@@ -1,6 +1,7 @@
 "use client";
 
 import { availabilitySchema } from "@/app/lib/validators";
+import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,14 +47,15 @@ const AvailabilityForm = ({ initialData }) => {
   };
 
   return (
-    <>
+    <Card className="max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-hide">
+      <CardContent>
       {/* we have different checkboxes for each and every day in form  */}
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-6 p-6 bg-card rounded-xl border shadow-sm max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-hide"
+        className="space-y-6"
       >
-        {/* 
+        {/*
     
     for each and every field , we have this isAvailable , this is what will define particular day is available or not
    
@@ -209,7 +211,8 @@ const AvailabilityForm = ({ initialData }) => {
           {loading ? "Updating..." : "Update Availability"}
         </Button>
       </form>
-    </>
+      </CardContent>
+    </Card>
   );
 };
 

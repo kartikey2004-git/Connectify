@@ -8,7 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Clock, Video } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Calendar, Clock, Users } from "lucide-react";
 import { format } from "date-fns";
 import CancelMeetingButton from "./cancel-meeting";
 
@@ -18,9 +19,15 @@ import CancelMeetingButton from "./cancel-meeting";
 const MeetingList = ({ meetings, type }) => {
   if (meetings.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">No {type} meetings found</p>
-      </div>
+      <EmptyState
+        icon={Users}
+        title={`No ${type} meetings`}
+        description={
+          type === "upcoming"
+            ? "Meetings booked through your event links will show up here."
+            : "Meetings you've completed or that have passed will show up here."
+        }
+      />
     );
   }
   return (
@@ -40,7 +47,7 @@ const MeetingList = ({ meetings, type }) => {
               </CardDescription>
 
               {meeting.additionalInfo && (
-                <CardDescription className="text-sm italic">
+                <CardDescription className="text-sm">
                   &quot;{meeting.additionalInfo}&quot;
                 </CardDescription>
               )}
@@ -61,20 +68,6 @@ const MeetingList = ({ meetings, type }) => {
                   {format(new Date(meeting.endTime), "h:mm a")}
                 </span>
               </div>
-
-              {meeting.meetLink && (
-                <div className="flex items-center">
-                  <Video className="mr-3 w-4 h-4 text-muted-foreground" />
-                  <a
-                    href={meeting.meetLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline font-medium text-sm"
-                  >
-                    Join Meeting
-                  </a>
-                </div>
-              )}
             </CardContent>
 
             {type === "upcoming" && (

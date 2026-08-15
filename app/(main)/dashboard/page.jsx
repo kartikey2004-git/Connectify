@@ -7,16 +7,36 @@ import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usernameSchema } from "@/app/lib/validators";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/use-fetch";
 import { updateUsername } from "@/actions/users";
 import { BarLoader } from "react-spinners";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getLatestUpdates } from "@/actions/dashboard";
 import { format } from "date-fns";
 import { ExternalLink } from "lucide-react";
+import { POST_AUTH_REDIRECT_KEY } from "@/components/create-event-link";
 
 const Dashboard = () => {
   const { isLoaded, user } = useUser();
+  const router = useRouter();
+  const [origin, setOrigin] = useState("");
+
+  // If the user arrived here via the sign-in redirect after clicking "Create Event"
+  // while logged out, honor that intent instead of leaving them stranded on the dashboard.
+  useEffect(() => {
+    const pendingRedirect = sessionStorage.getItem(POST_AUTH_REDIRECT_KEY);
+    if (pendingRedirect) {
+      sessionStorage.removeItem(POST_AUTH_REDIRECT_KEY);
+      router.replace(pendingRedirect);
+    }
+  }, [router]);
+
+  // window.location.origin isn't known during SSR, so it's set post-mount to avoid a hydration mismatch
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   // useUser() : gives you access to the current signed-in user's details, authentication state, and some utility functions
 
@@ -38,7 +58,7 @@ const Dashboard = () => {
     if (isLoaded && user?.username) {
       setValue("username", user?.username);
     }
-  }, [isLoaded]);
+  }, [isLoaded, user]);
 
   // TO fetch data , we need to use useEffect or to update our data , we would need to write things like loading , error : Fetching an API
 
@@ -97,7 +117,19 @@ const Dashboard = () => {
               )}
             </div>
           ) : (
-            <p className="text-muted-foreground">Loading updates...</p>
+            <div className="space-y-2">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between rounded-lg bg-muted/50 p-3"
+                >
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-3 w-56" />
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </CardContent>
       </Card>
@@ -112,7 +144,7 @@ const Dashboard = () => {
             <div>
               <div className="flex items-center gap-2 p-3 rounded-md border bg-muted/30">
                 <span className="text-sm text-muted-foreground">
-                  {typeof window !== "undefined" ? window.location.origin : ""}/
+                  {origin}/
                 </span>
                 <Input
                   {...register("username")}

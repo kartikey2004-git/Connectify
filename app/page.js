@@ -6,7 +6,7 @@ import {
   Calendar,
   Clock,
   Link2,
-  Video,
+  Bell,
   LayoutDashboard,
   Globe,
   Sparkles,
@@ -33,10 +33,10 @@ const features = [
       "Share unique username-based scheduling links that showcase all your public events with SEO-friendly pages.",
   },
   {
-    icon: Video,
-    title: "Google Meet Integration",
+    icon: Bell,
+    title: "Instant Booking Confirmation",
     description:
-      "Every confirmed booking automatically generates a Google Meet link and syncs with your Google Calendar in real-time.",
+      "Bookings are confirmed the moment they're made, with attendee name, email, and notes right in your dashboard.",
   },
   {
     icon: LayoutDashboard,
@@ -61,7 +61,7 @@ const testimonials = [
   },
   {
     quote:
-      "The Google Meet integration is brilliant! My students can book slots seamlessly, and everything syncs with my calendar automatically. A must-have for coaches.",
+      "My students can book slots seamlessly, and I always know exactly who's coming and when. A must-have for coaches.",
     name: "Arjun Mehta",
     role: "Career Coach, Mumbai",
   },
@@ -79,7 +79,7 @@ const testimonials = [
   },
   {
     quote:
-      "Scheduling candidate interviews used to be chaotic. Now with ConnectX, candidates select their slots, and Google Meet links are generated instantly. Game changer!",
+      "Scheduling candidate interviews used to be chaotic. Now with ConnectX, candidates just pick a slot and it's confirmed instantly. Game changer!",
     name: "Kavya Reddy",
     role: "HR Manager, Tech Company",
   },

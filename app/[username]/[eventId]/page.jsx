@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import EventDetails from "./_components/event-details";
 import BookingForm from "./_components/booking-form";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // this is one of major reason using nextJS , it provides SEO capabilites to our app and make our apps rank on google
 
@@ -58,25 +60,34 @@ export default async function EventPage({ params }) {
   // console.log(event);
 
   return (
-    <div className="flex flex-col justify-center lg:flex-row px-4 py-8 gap-8 max-w-6xl mx-auto">
+    <div className="app-container flex max-w-6xl flex-col gap-8 py-8 sm:py-10 lg:flex-row lg:justify-center">
       <EventDetails event={event} />
 
-      <Suspense
-        fallback={
-          <div className="flex justify-center items-center p-8">
-            <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted border-t-primary" />
-          </div>
-        }
-      >
+      <Suspense fallback={<BookingFormSkeleton />}>
         <BookingForm event={event} availability={availability} />
       </Suspense>
     </div>
   );
 }
 
-/* 
+function BookingFormSkeleton() {
+  return (
+    <Card className="w-full p-8 lg:w-2/3">
+      <div className="flex flex-col gap-6 md:h-96 md:flex-row">
+        <Skeleton className="h-72 w-full rounded-lg md:h-full" />
+        <div className="grid w-full grid-cols-2 gap-2 lg:grid-cols-3">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <Skeleton key={i} className="h-8 w-full rounded-md" />
+          ))}
+        </div>
+      </div>
+    </Card>
+  );
+}
 
-We will try to make this in a way that this should be SEO ( Search Engine Optimisation ) friendly page , because this is a public page , 
+/*
+
+We will try to make this in a way that this should be SEO ( Search Engine Optimisation ) friendly page , because this is a public page ,
 
    - so we need to set everything from meta data to server side rendering
 

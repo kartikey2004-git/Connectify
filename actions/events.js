@@ -37,6 +37,10 @@ export async function createEvent(data) {
 
     const validatedData = eventSchema.safeParse(data);
 
+    if (!validatedData.success) {
+      throw new Error(validatedData.error.errors[0]?.message || "Invalid event data");
+    }
+
     //  console.log("Validated Event Data:", validatedData);
 
     // console.log("User ID:", userId);
@@ -63,6 +67,7 @@ export async function createEvent(data) {
     return event;
   } catch (error) {
     console.error(" Error in createEvent:", error);
+    throw error;
   }
 }
 
@@ -114,6 +119,7 @@ export async function getUserEvents() {
     // return username because we have a copy feature , when copy it gives us the link with username and the eventId , that's why we need username
   } catch (error) {
     console.error(" Error in fetching Events:", error);
+    throw error;
   }
 }
 
@@ -164,6 +170,7 @@ export async function DeleteEvent(eventId) {
     return { success: true };
   } catch (error) {
     console.error(" Error in fetching Events:", error);
+    throw error;
   }
 }
 

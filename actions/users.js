@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { usernameSchema } from "@/app/lib/validators";
 
 export async function updateUsername(username) {
   // we need to check that user who is trying to update username belongs to that particular account , authorized user hona chahiye
@@ -14,6 +15,16 @@ export async function updateUsername(username) {
     throw new Error("Unauthorized");
   }
 
+  // server-side validation, since this Server Action can be invoked directly and bypass the client's zodResolver
+
+  const validated = usernameSchema.safeParse({ username });
+
+  if (!validated.success) {
+    throw new Error(validated.error.errors[0]?.message || "Invalid username");
+  }
+
+  username = validated.data.username;
+
   // check username is already taken or not in database
 
   const existingusername = await db.user.findUnique({
@@ -22,28 +33,28 @@ export async function updateUsername(username) {
 
   // one who is trying to change the username is not proper user ,they don't have the authorisation permissions
 
-  if (existingusername && existingusername.id !== userId) {
+  if (existingusername && existingusername.clerkUserId !== userId) {
     throw new Error("Username is already taken");
   }
 
-  if (!clerkClient) {
+  const clerk = await clerkClient();
+
+  if (!clerk) {
     throw new Error("Clerk client is not initialized properly");
   }
 
-  // update username  of user , change username on basis of clerkUserId in database
+  // update username in clerk first (awaited) so a failure here doesn't leave the DB and Clerk out of sync
+
+  await clerk.users.updateUser(userId, { username });
+
+  // update username of user , change username on basis of clerkUserId in database
 
   await db.user.update({
     where: { clerkUserId: userId },
     data: { username },
   });
 
-  // update username in clerk also with userID
-
-  (await clerkClient())?.users?.updateUser?.(userId, {
-    username,
-  });
-
-  return { sucess: true };
+  return { success: true };
 }
 
 

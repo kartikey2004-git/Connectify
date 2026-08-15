@@ -1,6 +1,8 @@
 import { getUserByUsername } from "@/actions/users";
 import EventCard from "@/components/event-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Calendar } from "lucide-react";
 import { notFound } from "next/navigation";
 
 // this is one of major reason using nextJS , it provides SEO capabilites to our app and make our apps rank on google
@@ -55,7 +57,7 @@ export default async function UserPage({ params }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="app-container max-w-6xl py-8 sm:py-10">
       <div className="flex flex-col items-center mb-12">
         <Avatar className="w-24 h-24 mb-6 border-4 shadow-lg rounded-full">
           {user?.imageUrl ? (
@@ -82,9 +84,11 @@ export default async function UserPage({ params }) {
       </div>
 
       {user.events.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">No public events available</p>
-        </div>
+        <EmptyState
+          icon={Calendar}
+          title="No public events available"
+          description={`${user.name} hasn't published any bookable events yet.`}
+        />
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {user.events.map((event) => {

@@ -92,3 +92,15 @@ export const bookingSchema = z.object({
   time: z.string().regex(/^\d{2}:\d{2}$/, "Invalid time format"),
   additionalInfo: z.string().optional(),
 });
+
+// Validates the actual payload sent to the createBooking Server Action
+// (built client-side from bookingSchema's fields plus the resolved eventId/startTime/endTime)
+
+export const createBookingSchema = z.object({
+  eventId: z.string().min(1, "Event ID is required"),
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email"),
+  startTime: z.string().datetime("Invalid start time"),
+  endTime: z.string().datetime("Invalid end time"),
+  additionalInfo: z.string().optional(),
+});

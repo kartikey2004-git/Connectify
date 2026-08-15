@@ -1,65 +1,49 @@
 "use server";
 
 import { db } from "@/lib/prisma";
-import { clerkClient } from "@clerk/nextjs/server";
-import { google } from "googleapis";
+import { createBookingSchema } from "@/app/lib/validators";
 
 export async function createBooking(bookingData) {
   try {
-    // Fetch the event and its creator
+    // server-side validation, since this Server Action can be invoked directly and bypass the client's zodResolver
+
+    const validated = createBookingSchema.safeParse(bookingData);
+
+    if (!validated.success) {
+      throw new Error(validated.error.errors[0]?.message || "Invalid booking data");
+    }
+
+    bookingData = validated.data;
+
+    // Fetch the event
 
     const event = await db.event.findUnique({
       where: { id: bookingData.eventId },
-      include: { user: true },
     });
 
     if (!event) {
       throw new Error("Event not Found");
     }
 
-    // Get the event creator's Google OAuth token from Clerk
+    // Re-check the slot is still free server-side before booking it — availability is otherwise
+    // only ever computed for display, so two concurrent bookers could otherwise both succeed.
 
-    const ClerkClient = await clerkClient()
+    const requestedStart = new Date(bookingData.startTime);
+    const requestedEnd = new Date(bookingData.endTime);
 
-    const { data } = await ClerkClient?.users?.getUserOauthAccessToken(event.user.clerkUserId, "google");
-
-    
-    // console.log(data);
-
-    const token = data[0]?.token;
-    // console.log(token);
-
-    if (!token) {
-      throw new Error("Event creator has not connected Google Calendar");
-    }
-
-    // Set up Google OAuth client
-
-    const oauth2Client = new google.auth.OAuth2();
-    oauth2Client.setCredentials({ access_token: token });
-
-    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
-
-    const meetResponse = await calendar.events.insert({
-      calendarId: "primary",
-      conferenceDataVersion: 1,
-
-      requestBody: {
-        summary: `${bookingData.name} - ${event.title}`,
-        description: bookingData.additionalInfo,
-        start: { dateTime: bookingData.startTime },
-        end: { dateTime: bookingData.endTime },
-        attendees: [{ email: bookingData.email }, { email: event.user.email }],
-
-        conferenceData: {
-          createRequest: { requestId: `${event.id}-${Date.now()}` },
-        },
+    const overlappingBooking = await db.booking.findFirst({
+      where: {
+        userId: event.userId,
+        startTime: { lt: requestedEnd },
+        endTime: { gt: requestedStart },
       },
     });
 
-    const meetLink = meetResponse.data.hangoutLink;
-
-    const googleEventId = meetResponse.data.id;
+    if (overlappingBooking) {
+      throw new Error(
+        "This time slot is no longer available. Please select a different time.",
+      );
+    }
 
     // Create booking in database
 
@@ -72,12 +56,10 @@ export async function createBooking(bookingData) {
         startTime: bookingData.startTime,
         endTime: bookingData.endTime,
         additionalInfo: bookingData.additionalInfo,
-        meetLink,
-        googleEventId,
       },
     });
 
-    return { success: true, booking, meetLink };
+    return { success: true, booking };
   } catch (error) {
     console.error("Error creating booking:", error);
     return { success: false, error: error.message };

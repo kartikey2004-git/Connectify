@@ -39,9 +39,9 @@ const EventForm = ({ onSubmitForm }) => {
   const { error, loading, fn: fnCreateEvent } = useFetch(createEvent);
 
   const onSubmit = async (data) => {
-    await fnCreateEvent(data);
+    const result = await fnCreateEvent(data);
 
-    if (!loading && !error) {
+    if (result) {
       onSubmitForm();
       router.refresh();
     }

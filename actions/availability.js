@@ -4,6 +4,7 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { availabilitySchema } from "@/app/lib/validators";
 
 // API to get user availability
 
@@ -68,6 +69,16 @@ export async function updateAvailability(data) {
   if (!userId) {
     throw new Error("Unauthorized");
   }
+
+  // server-side validation, since this Server Action can be invoked directly and bypass the client's zodResolver
+
+  const validated = availabilitySchema.safeParse(data);
+
+  if (!validated.success) {
+    throw new Error(validated.error.errors[0]?.message || "Invalid availability data");
+  }
+
+  data = validated.data;
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },

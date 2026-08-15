@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { PenBox } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import UserMenu from "./user-menu";
 import ThemeToggle from "./theme-toggle";
+import CreateEventLink from "./create-event-link";
 
 const Header = async () => {
   return (
@@ -18,15 +18,7 @@ const Header = async () => {
         <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
 
-          <Link href={"/events?create=true"}>
-            <Button className="flex items-center gap-2">
-              <PenBox size={18} className="block md:hidden" />
-              <div className="hidden md:flex items-center gap-2">
-                <PenBox size={18} />
-                <span>Create Event</span>
-              </div>
-            </Button>
-          </Link>
+          <CreateEventLink />
 
           <SignedOut>
             <SignInButton forceRedirectUrl="/dashboard">

@@ -66,13 +66,15 @@ const AppLayout = ({ children }) => {
         </aside>
 
         <main className="flex-1 overflow-y-auto bg-background px-4 pb-20 pt-6 sm:px-6 md:p-8 md:pb-8">
-          <header className="mb-6 sm:mb-8">
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              {navItems.find((item) => item.href === pathname)?.label ||
-                "Dashboard"}
-            </h1>
-          </header>
-          {children}
+          <div className="mx-auto w-full max-w-6xl">
+            <header className="mb-6 sm:mb-8">
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                {navItems.find((item) => item.href === pathname)?.label ||
+                  "Dashboard"}
+              </h1>
+            </header>
+            {children}
+          </div>
         </main>
 
         <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card md:hidden">
