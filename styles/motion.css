@@ -1,0 +1,26 @@
+/*
+ * The app has no motion: no transitions, animations or smooth scrolling.
+ * Kept outside any @layer so it overrides every Tailwind utility and library
+ * class (drawer/select enter-exit, hover transitions, skeleton pulse) without !important.
+ * Exempt: loading indicators (a frozen progress bar would look broken) and anything
+ * inside `.allow-motion`, used only for the nav link hover underline from the design reference.
+ * The theme-switch circle reveal runs on ::view-transition pseudo-elements, which this rule does not
+ * match (`*` never selects them), so it needs no exemption.
+ */
+*:not(.loading-bar, .loading-bar *, .allow-motion, .allow-motion *),
+*:not(.loading-bar, .loading-bar *, .allow-motion, .allow-motion *)::before,
+*:not(.loading-bar, .loading-bar *, .allow-motion, .allow-motion *)::after {
+  animation: none;
+  transition: none;
+  scroll-behavior: auto;
+}
+
+/*
+ * vaul (the drawer) injects its own slide/fade keyframes and transform transitions
+ * with high-specificity attribute selectors, so this is the one place !important is required.
+ */
+[data-vaul-drawer],
+[data-vaul-overlay] {
+  animation: none !important;
+  transition: none !important;
+}

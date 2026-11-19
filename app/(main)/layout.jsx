@@ -1,106 +1,25 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { BarChart, Calendar, Clock, Users } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarLoader } from "react-spinners";
+import { LoadingBar } from "@/components/ui/loading-bar";
+import { SectionNav } from "./_components/app-nav";
+import { NAV_ITEMS } from "./_components/nav-items";
 
-// define objects which will contains diff routes for layout
-
-const navItems = [
-  { id: 1, href: "/dashboard", label: "Dashboard", icon: BarChart },
-  { id: 2, href: "/events", label: "Events", icon: Calendar },
-  { id: 3, href: "/meetings", label: "Meetings", icon: Users },
-  { id: 4, href: "/availability", label: "Availability", icon: Clock },
-];
-
-const AppLayout = ({ children }) => {
+export default function AppLayout({ children }) {
   const { isLoaded } = useUser();
-
-  /* useUser() is a React hook provided by Clerk for handling authentication. 
-  
-  It gives you access to the current signed-in user's details, authentication state, and some utility functions
-
-     - isLoaded: Tells you if Clerk finished loading the user state.
-
-     - isSignedIn: true if the user is signed in, false if not.
-
-     - user: Gives you access to user properties like user.id, user.firstName, user.emailAddresses, etc.
-
-  */
-
   const pathname = usePathname();
 
-  // usePathname() : A Client Component hook that lets you read the current URL's pathname.
-
-  // aside is very important for accessibility , this is not the main content of our page  ( important in interviews )
+  const title = NAV_ITEMS.find((item) => item.href === pathname)?.label ?? "Dashboard";
 
   return (
     <>
-      {!isLoaded && <BarLoader width={"100%"} color="currentColor" />}
-
-      <div className="flex h-screen flex-col md:flex-row">
-        <aside className="hidden w-64 border-r border-border bg-card md:block">
-          <nav className="p-4">
-            <ul className="space-y-1">
-              {navItems.map((item) => {
-                return (
-                  <li key={item.id}>
-                    <Link
-                      href={item.href}
-                      className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                        pathname === item.href
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                      }`}
-                    >
-                      <item.icon className="w-4 h-4 mr-3" />
-                      {item.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-        </aside>
-
-        <main className="flex-1 overflow-y-auto bg-background px-4 pb-20 pt-6 sm:px-6 md:p-8 md:pb-8">
-          <div className="mx-auto w-full max-w-6xl">
-            <header className="mb-6 sm:mb-8">
-              <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                {navItems.find((item) => item.href === pathname)?.label ||
-                  "Dashboard"}
-              </h1>
-            </header>
-            {children}
-          </div>
-        </main>
-
-        <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card md:hidden">
-          <ul className="flex justify-around items-center py-2">
-            {navItems.map((item) => {
-              return (
-                <li key={item.id}>
-                  <Link
-                    href={item.href}
-                    className={`flex flex-col items-center gap-1 rounded-md p-2 text-xs transition-colors ${
-                      pathname === item.href
-                        ? "text-primary"
-                        : "text-muted-foreground"
-                    }`}
-                  >
-                    <item.icon className="w-5 h-5" />
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+      {!isLoaded && <LoadingBar />}
+      <div className="page-shell">
+        <SectionNav />
+        <h1 className="heading-lg mb-6 sm:mb-8">{title}</h1>
+        {children}
       </div>
     </>
   );
-};
-
-export default AppLayout;
+}

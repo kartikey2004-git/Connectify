@@ -1,0 +1,15 @@
+/* react-day-picker themed from the design tokens (it defines its own blue accent on .rdp-root). */
+div.rdp-root {
+  --rdp-accent-color: var(--foreground);
+  --rdp-accent-background-color: var(--accent);
+  --rdp-day_button-border-radius: var(--radius-md);
+}
+
+div.rdp-root .rdp-chevron {
+  fill: var(--muted-foreground);
+}
+
+div.rdp-root .rdp-button_previous:hover .rdp-chevron,
+div.rdp-root .rdp-button_next:hover .rdp-chevron {
+  fill: var(--foreground);
+}

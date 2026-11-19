@@ -1,10 +1,15 @@
-import { SignIn } from '@clerk/nextjs'
-import React from 'react'
+import { SignIn } from "@clerk/nextjs";
+import AuthCardSkeleton from "@/components/auth/auth-card-skeleton";
+import ClientOnly from "@/components/auth/client-only";
+import { POST_AUTH_URL } from "@/lib/constants";
 
-const page = () => {
+export const metadata = { title: "Sign in | Connectify" };
+
+export default function SignInPage() {
+  // Always land on /sync-user (which ends at /dashboard), whatever page sent the user here.
   return (
-    <SignIn/>
-  )
+    <ClientOnly fallback={<AuthCardSkeleton />}>
+      <SignIn forceRedirectUrl={POST_AUTH_URL} />
+    </ClientOnly>
+  );
 }
-
-export default page

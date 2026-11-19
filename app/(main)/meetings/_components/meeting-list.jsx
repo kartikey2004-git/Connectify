@@ -1,7 +1,6 @@
-import React from "react";
+import { Calendar, Clock, Users } from "lucide-react";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -9,77 +8,71 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Calendar, Clock, Users } from "lucide-react";
-import { format } from "date-fns";
+import { formatInTimeZone } from "@/lib/time";
 import CancelMeetingButton from "./cancel-meeting";
 
-// import { Button } from "@/components/ui/button";
-// import CancelMeetingButton from "./cancel-meetings";
+const EMPTY_DESCRIPTIONS = {
+  upcoming: "Meetings booked through your event links will show up here.",
+  past: "Meetings you've completed or that have passed will show up here.",
+};
 
-const MeetingList = ({ meetings, type }) => {
+function MeetingCard({ meeting, timeZone, canCancel }) {
+  const at = (date, pattern) => formatInTimeZone(date, timeZone, pattern);
+
+  return (
+    <Card className="flex flex-col justify-between md:hover:bg-accent/40">
+      <CardHeader>
+        <CardTitle className="text-lg">{meeting.event.title}</CardTitle>
+        <CardDescription>with {meeting.name}</CardDescription>
+        {meeting.additionalInfo && (
+          <CardDescription>&quot;{meeting.additionalInfo}&quot;</CardDescription>
+        )}
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex items-center text-muted-foreground">
+          <Calendar className="mr-3 size-4" />
+          <span className="text-sm">{at(meeting.startTime, "MMMM dd, yyyy")}</span>
+        </div>
+        <div className="flex items-center text-muted-foreground">
+          <Clock className="mr-3 size-4" />
+          <span className="text-sm">
+            {at(meeting.startTime, "h:mm a")} - {at(meeting.endTime, "h:mm a")}
+          </span>
+        </div>
+      </CardContent>
+      {canCancel && (
+        <CardFooter className="pt-4">
+          <CancelMeetingButton meetingId={meeting.id} />
+        </CardFooter>
+      )}
+    </Card>
+  );
+}
+
+export default function MeetingList({ meetings, timeZone, type }) {
   if (meetings.length === 0) {
     return (
       <EmptyState
         icon={Users}
         title={`No ${type} meetings`}
-        description={
-          type === "upcoming"
-            ? "Meetings booked through your event links will show up here."
-            : "Meetings you've completed or that have passed will show up here."
-        }
+        description={EMPTY_DESCRIPTIONS[type]}
       />
     );
   }
+
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {meetings.map((meeting) => {
-        return (
-          <Card
+    <div className="space-y-4">
+      <p className="body-text">Times shown in {timeZone}</p>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {meetings.map((meeting) => (
+          <MeetingCard
             key={meeting.id}
-            className="flex flex-col justify-between hover:shadow-md transition-shadow"
-          >
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">
-                {meeting.event.title}
-              </CardTitle>
-              <CardDescription className="text-sm">
-                with {meeting.name}
-              </CardDescription>
-
-              {meeting.additionalInfo && (
-                <CardDescription className="text-sm">
-                  &quot;{meeting.additionalInfo}&quot;
-                </CardDescription>
-              )}
-            </CardHeader>
-
-            <CardContent className="space-y-3">
-              <div className="flex items-center text-muted-foreground">
-                <Calendar className="mr-3 h-4 w-4" />
-                <span className="text-sm">
-                  {format(new Date(meeting.startTime), "MMMM dd, yyyy")}
-                </span>
-              </div>
-
-              <div className="flex items-center text-muted-foreground">
-                <Clock className="mr-3 h-4 w-4" />
-                <span className="text-sm">
-                  {format(new Date(meeting.startTime), "h:mm a")} -{" "}
-                  {format(new Date(meeting.endTime), "h:mm a")}
-                </span>
-              </div>
-            </CardContent>
-
-            {type === "upcoming" && (
-              <CardFooter className="flex justify-between pt-4">
-                <CancelMeetingButton meetingId={meeting.id} />
-              </CardFooter>
-            )}
-          </Card>
-        );
-      })}
+            meeting={meeting}
+            timeZone={timeZone}
+            canCancel={type === "upcoming"}
+          />
+        ))}
+      </div>
     </div>
   );
-};
-
-export default MeetingList;
+}

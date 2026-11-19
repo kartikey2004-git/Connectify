@@ -79,6 +79,10 @@ model Availability {
 
   timeGap Int // Minimum gap between bookings in minutes
 
+  // IANA zone (e.g. "Asia/Kolkata") that the day start/end times are expressed in.
+  // Existing rows default to UTC, which is how their times were already being interpreted.
+  timeZone String @default("UTC")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

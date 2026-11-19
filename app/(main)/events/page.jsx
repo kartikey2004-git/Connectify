@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { getUserEvents } from "@/actions/events";
-import EventCard from "@/components/event-card";
+import EventCard from "@/components/events/event-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -54,7 +54,7 @@ const Events = async () => {
   }
 
   return (
-    <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {events.map((event) => (
         <EventCard key={event.id} event={event} username={username} />
       ))}
@@ -64,7 +64,7 @@ const Events = async () => {
 
 function EventsGridSkeleton() {
   return (
-    <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {Array.from({ length: 4 }).map((_, i) => (
         <Card key={i}>
           <CardHeader>
@@ -87,15 +87,3 @@ function EventsGridSkeleton() {
     </div>
   );
 }
-
-// how efficiently we can fetch data on server side , so that this loads pretty fast and I don't have to expose user any information
-
-// Suspense : Lets you display a fallback until its children have finished loading.
-
-// because we will fetch the events inside the Events component , if the data might not be available , so that we show some fallback UI
-
-// this thing in Nextjs that we directly fetch the data inside our components just like this , in react it's not possible because it will rendered again and again
-
-// these are server components
-
-// EventCard is something which is used in multiple places like in our custom user pages when we show our public events

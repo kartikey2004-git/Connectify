@@ -13,7 +13,7 @@ export const metadata = {
 const MeetingPage = () => {
   return (
     <Tabs defaultValue="upcoming" className="space-y-6">
-      <TabsList className="grid w-full grid-cols-2 max-w-100">
+      <TabsList className="grid w-full grid-cols-2 max-w-sm">
         <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
         <TabsTrigger value="past">Past</TabsTrigger>
       </TabsList>
@@ -32,18 +32,18 @@ const MeetingPage = () => {
 };
 
 async function UpcomingMeetings() {
-  const meetings = await getUserMeetings("upcoming");
-  return <MeetingList meetings={meetings} type={"upcoming"} />;
+  const { meetings, timeZone } = await getUserMeetings("upcoming");
+  return <MeetingList meetings={meetings} timeZone={timeZone} type="upcoming" />;
 }
 
 async function PastMeetings() {
-  const meetings = await getUserMeetings("past");
-  return <MeetingList meetings={meetings} type={"past"} />;
+  const { meetings, timeZone } = await getUserMeetings("past");
+  return <MeetingList meetings={meetings} timeZone={timeZone} type="past" />;
 }
 
 function MeetingsGridSkeleton() {
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2">
       {Array.from({ length: 3 }).map((_, i) => (
         <Card key={i}>
           <CardHeader>

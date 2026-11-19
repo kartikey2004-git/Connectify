@@ -1,0 +1,33 @@
+/* Layout primitives: page and section containers, surfaces, interactive rows. */
+@layer components {
+  .page-shell {
+    width: 100%;
+    max-width: 48rem;
+    margin-inline: auto;
+    padding: 2rem 1rem 4rem;
+  }
+  .section-shell {
+    width: 100%;
+    max-width: 48rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  .surface {
+    border: 1px solid color-mix(in oklab, var(--border) 75%, transparent);
+    background: color-mix(in oklab, var(--card) 80%, transparent);
+    border-radius: var(--radius);
+  }
+  .interactive-row {
+    cursor: pointer;
+    border-radius: var(--radius);
+  }
+
+  @media (min-width: 640px) {
+    .page-shell {
+      padding: 3rem 1.5rem 5rem;
+    }
+    .section-shell {
+      padding-inline: 1.5rem;
+    }
+  }
+}

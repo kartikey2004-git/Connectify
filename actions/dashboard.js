@@ -1,46 +1,21 @@
 "use server";
 
 import { db } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { requireUser } from "@/lib/auth";
+import { DEFAULT_TIME_ZONE } from "@/lib/time";
 
+const LATEST_UPDATES_LIMIT = 3;
+
+/** The next few bookings plus the time zone to display them in (the host's availability zone). */
 export async function getLatestUpdates() {
-  const { userId } = await auth();
+  const user = await requireUser({ availability: true });
 
-  // The auth() helper returns the Auth object of the currently active user,
-
-  if (!userId) {
-    throw new Error("Unauthorized: No user ID found.");
-  }
-
-  // Check user is present in database or not with the help of clerkUserId
-
-  const user = await db.user.findUnique({
-    where: { clerkUserId: userId },
+  const meetings = await db.booking.findMany({
+    where: { userId: user.id, startTime: { gte: new Date() } },
+    include: { event: { select: { title: true } } },
+    orderBy: { startTime: "asc" },
+    take: LATEST_UPDATES_LIMIT,
   });
 
-  if (!user) {
-    throw new Error("User not found in database.");
-  }
-
-  const now = new Date();
-
-  const upcomingMeetings = await db.booking.findMany({
-    where: {
-      userId: user.id,
-      startTime: { gte: now },
-    },
-    include: {
-      event: {
-        select: {
-          title: true,
-        },
-      },
-    },
-    orderBy: {
-      startTime: "asc",
-    },
-    take: 3,
-  });
-
-  return upcomingMeetings
+  return { meetings, timeZone: user.availability?.timeZone ?? DEFAULT_TIME_ZONE };
 }

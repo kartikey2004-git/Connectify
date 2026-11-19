@@ -1,0 +1,57 @@
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html,
+  body {
+    min-height: 100%;
+  }
+  body {
+    @apply bg-background text-foreground overflow-x-hidden font-sans text-sm font-normal leading-6 antialiased sm:text-base;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-sans tracking-[-0.025em] text-foreground;
+  }
+  h1 {
+    font-size: 2rem;
+    font-weight: 450;
+    line-height: 1.1;
+  }
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 450;
+    line-height: 1.15;
+  }
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 450;
+    line-height: 1.2;
+  }
+  @media (min-width: 640px) {
+    h1 {
+      font-size: 3rem;
+      line-height: 3.5rem;
+      letter-spacing: -0.06em;
+    }
+    h2 {
+      font-size: 2rem;
+      line-height: 2.5rem;
+      letter-spacing: -0.04em;
+    }
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+  ::selection {
+    @apply bg-foreground text-background;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}

@@ -1,24 +1,31 @@
 import { cn } from "@/lib/utils";
-
-function EmptyState({ icon: Icon, title, description, action, className }) {
+function EmptyState({
+  icon: Icon,
+  title,
+  description,
+  action,
+  className,
+  ...props
+}) {
   return (
     <div
       data-slot="empty-state"
       className={cn(
-        "flex flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-border px-6 py-16 text-center",
+        "flex flex-col items-center justify-center gap-3 rounded-md border border-dashed border-border/60 px-6 py-12 text-center",
         className,
       )}
+      {...props}
     >
-      {Icon && (
-        <div className="mb-3 flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
-          <Icon className="size-5" />
-        </div>
-      )}
-      <h3 className="text-base font-semibold text-foreground">{title}</h3>
-      {description && (
-        <p className="max-w-sm text-sm text-muted-foreground">{description}</p>
-      )}
-      {action && <div className="mt-5">{action}</div>}
+      {Icon ? (
+        <Icon className="size-8 text-muted-foreground/30" aria-hidden="true" />
+      ) : null}
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-foreground">{title}</p>
+        {description ? (
+          <p className="text-sm text-muted-foreground">{description}</p>
+        ) : null}
+      </div>
+      {action ? <div className="mt-1">{action}</div> : null}
     </div>
   );
 }

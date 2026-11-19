@@ -1,29 +1,29 @@
+"use client";
+
 import { AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
-function ErrorState({
-  icon: Icon = AlertCircle,
-  title = "Something went wrong",
-  description,
-  action,
-  className,
-}) {
+function ErrorState({ title = "Something went wrong", description, onRetry, className, ...props }) {
   return (
     <div
       data-slot="error-state"
       className={cn(
-        "flex flex-col items-center justify-center gap-1 rounded-xl border border-border bg-card px-6 py-16 text-center shadow-sm",
+        "flex flex-col items-center justify-center gap-3 rounded-md border border-destructive/30 bg-destructive/5 px-6 py-12 text-center",
         className,
       )}
+      {...props}
     >
-      <div className="mb-3 flex size-11 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-        <Icon className="size-5" />
+      <AlertCircle className="size-6 text-destructive" aria-hidden="true" />
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-foreground">{title}</p>
+        {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
       </div>
-      <h3 className="text-base font-semibold text-foreground">{title}</h3>
-      {description && (
-        <p className="max-w-sm text-sm text-muted-foreground">{description}</p>
-      )}
-      {action && <div className="mt-5">{action}</div>}
+      {onRetry ? (
+        <Button variant="outline" size="sm" onClick={onRetry} className="mt-1">
+          Try again
+        </Button>
+      ) : null}
     </div>
   );
 }

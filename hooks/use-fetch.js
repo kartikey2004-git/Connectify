@@ -1,48 +1,33 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-/* create a custom hook useFetch which help us to fetch data  every single time efficiently or make API calls
-
- custom hooks have power of accessing every single feature of react
-
- it will take callback function and state for handling errors , handling loading and handling the data
-
- ...args are additional arguments that user is providing 
-
-
- ( ...args means it can accept any number of arguments (to be passed to cb). )
-
- fn → a function to actually trigger the fetch with arguments. 
-
- You pass a callback function (cb) when you use this hook.
-
- That callback is usually an async function (like a fetch or API call).
-
- This hook is a reusable way to handle async requests with built-in loading, error, and data state management!  
-
-*/
-
-const useFetch = (cb) => {
+/**
+ * Wraps an async function (typically a server action) with loading/error/data state.
+ *
+ * `fn(...args)` calls the wrapped function and resolves with its result, or with
+ * `undefined` when it threw (the error is exposed through `error` instead).
+ */
+export default function useFetch(callback) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fn = async (...args) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await cb(...args);
-      setData(response);
+  const fn = useCallback(
+    async (...args) => {
+      setLoading(true);
       setError(null);
-      return response;
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  return { loading, error, data , fn};
-};
+      try {
+        const response = await callback(...args);
+        setData(response);
+        return response;
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [callback],
+  );
 
-export default useFetch
+  return { loading, error, data, fn };
+}
